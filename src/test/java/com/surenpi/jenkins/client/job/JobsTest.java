@@ -23,7 +23,7 @@ public class JobsTest {
 
     @Test
     public void create() throws IOException {
-        jobs.createJob(jobName, JOB_XML);
+        jobs.create(jobName, JOB_XML);
     }
 
     public static final String JOB_XML = "<?xml version='1.0' encoding='UTF-8'?>\n" +

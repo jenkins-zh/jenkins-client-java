@@ -8,6 +8,9 @@ package com.surenpi.jenkins.client.job;
 
 import com.surenpi.jenkins.client.BaseModel;
 
+/**
+ * @author suren
+ */
 public class Job extends BaseModel {
 
     private String name;
