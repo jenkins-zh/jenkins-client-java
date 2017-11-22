@@ -32,6 +32,9 @@ public class CredentialsTest {
     @Test
     public void create() throws IOException {
         Credential credential = new UserPasswdCredential(userName, "hello");
+        credential.setDescription("for unit test");
+        credential.setDisplayName("for unit test display");
+        credential.setFullName("for unit test fullname");
         credentials.create(credential);
     }
 
