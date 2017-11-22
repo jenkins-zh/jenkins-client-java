@@ -50,7 +50,7 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKN
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 
-public class JenkinsHttpClient implements Closeable {
+public class JenkinsHttpClient implements JenkinsClient, Closeable {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private URI uri;
@@ -140,6 +140,7 @@ public class JenkinsHttpClient implements Closeable {
      * @return an instance of the supplied class
      * @throws IOException in case of an error.
      */
+    @Override
     public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException {
         HttpGet getMethod = new HttpGet(UrlUtils.toJsonApiUri(uri, context, path));
 
@@ -162,6 +163,7 @@ public class JenkinsHttpClient implements Closeable {
      * @return the entity text
      * @throws IOException in case of an error.
      */
+    @Override
     public String get(String path) throws IOException {
         HttpGet getMethod = new HttpGet(UrlUtils.toJsonApiUri(uri, context, path));
         HttpResponse response = client.execute(getMethod, localContext);
@@ -187,6 +189,7 @@ public class JenkinsHttpClient implements Closeable {
      * @param <T> type of the response
      * @return an instance of the supplied class
      */
+    @Override
     public <T extends BaseModel> T getQuietly(String path, Class<T> cls) {
         T value;
         try {
@@ -206,6 +209,7 @@ public class JenkinsHttpClient implements Closeable {
      * @return the response stream
      * @throws IOException in case of an error.
      */
+    @Override
     public InputStream getFile(URI path) throws IOException {
         HttpGet getMethod = new HttpGet(path);
         HttpResponse response = client.execute(getMethod, localContext);
@@ -214,7 +218,8 @@ public class JenkinsHttpClient implements Closeable {
         return new RequestReleasingInputStream(response.getEntity().getContent(), getMethod);
     }
 
-    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException {
+    @Override
+    public BaseModel post(String path, Object data, Class cls) throws IOException {
         return post(path, data, cls, true);
     }
 
@@ -287,6 +292,7 @@ public class JenkinsHttpClient implements Closeable {
      * @param crumbFlag true / false.
      * @throws IOException in case of an error.
      */
+    @Override
     public void post_form(String path, Map<String, String> data, boolean crumbFlag) throws IOException {
         HttpPost request;
         if (data != null) {
@@ -336,6 +342,7 @@ public class JenkinsHttpClient implements Closeable {
      * @throws IOException,
      *             HttpResponseException
      */
+    @Override
     public HttpResponse post_form_with_result(String path, List<NameValuePair> data, boolean crumbFlag) throws IOException {
         HttpPost request;
         if (data != null) {
@@ -366,10 +373,12 @@ public class JenkinsHttpClient implements Closeable {
      * @return A string containing the xml response (if present)
      * @throws IOException in case of an error.
      */
+    @Override
     public String post_xml(String path, String xml_data) throws IOException {
         return post_xml(path, xml_data, true);
     }
 
+    @Override
     public String post_xml(String path, String xml_data, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(UrlUtils.toJsonApiUri(uri, context, path));
         if (crumbFlag == true) {
@@ -402,6 +411,7 @@ public class JenkinsHttpClient implements Closeable {
      * @return resulting response
      * @throws IOException in case of an error.
      */
+    @Override
     public String post_text(String path, String textData, boolean crumbFlag) throws IOException {
         return post_text(path, textData, ContentType.DEFAULT_TEXT, crumbFlag);
     }
@@ -416,6 +426,7 @@ public class JenkinsHttpClient implements Closeable {
      * @return resulting response
      * @throws IOException in case of an error.
      */
+    @Override
     public String post_text(String path, String textData, ContentType contentType, boolean crumbFlag)
             throws IOException {
         HttpPost request = new HttpPost(UrlUtils.toJsonApiUri(uri, context, path));
@@ -446,10 +457,12 @@ public class JenkinsHttpClient implements Closeable {
      * @param path path to request
      * @throws IOException in case of an error.
      */
+    @Override
     public void post(String path) throws IOException {
         post(path, null, null, false);
     }
 
+    @Override
     public void post(String path, boolean crumbFlag) throws IOException {
         post(path, null, null, crumbFlag);
     }
