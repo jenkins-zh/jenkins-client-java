@@ -17,6 +17,7 @@ import com.surenpi.jenkins.client.validator.HttpResponseValidator;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
@@ -467,6 +468,74 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
         post(path, null, null, crumbFlag);
     }
 
+    /**
+     * Perform a POST request using form url encoding.
+     *
+     * This method was added for the purposes of creating credentials, but may be
+     * useful for other API calls as well.
+     *
+     * Unlike post and post_xml, the path is *not* modified by adding
+     * "/api/json". Additionally, the params in data are provided as both
+     * request parameters including a json parameter, *and* in the
+     * JSON-formatted StringEntity, because this is what the folder creation
+     * call required. It is unclear if any other jenkins APIs operate in this
+     * fashion.
+     *
+     * @param path path to request, can be relative or absolute
+     * @param data data to post
+     * @param crumbFlag true / false.
+     * @throws IOException in case of an error.
+     */
+    public void post_form_json(String path, Map<String, Object> data, boolean crumbFlag) throws IOException {
+        HttpPost request;
+        if (data != null) {
+            // https://gist.github.com/stuart-warren/7786892 was slightly
+            // helpful here
+            List<String> queryParams = Lists.newArrayList();
+            queryParams.add("json=" + EncodingUtils.encodeParam(JSONObject.fromObject(data).toString()));
+            String value = mapper.writeValueAsString(data);
+            StringEntity stringEntity = new StringEntity(value, ContentType.APPLICATION_FORM_URLENCODED);
+            request = new HttpPost(noapi(path) + StringUtils.join(queryParams, "&"));
+            request.setEntity(stringEntity);
+        } else {
+            request = new HttpPost(noapi(path));
+        }
+
+        if (crumbFlag == true) {
+            Crumb crumb = get("/crumbIssuer", Crumb.class);
+            if (crumb != null) {
+                request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
+            }
+        }
+
+        HttpResponse response = client.execute(request, localContext);
+        getJenkinsVersionFromHeader(response);
+
+        try {
+            httpResponseValidator.validateResponse(response);
+        } finally {
+            EntityUtils.consume(response.getEntity());
+            releaseConnection(request);
+        }
+    }
+
+    private URI noapi(String path) {
+        if (!path.toLowerCase().matches("https?://.*")) {
+            path = urlJoin(this.context, path);
+        }
+        return uri.resolve("/").resolve(path);
+    }
+
+    private String urlJoin(String path1, String path2) {
+        if (!path1.endsWith("/")) {
+            path1 += "/";
+        }
+        if (path2.startsWith("/")) {
+            path2 = path2.substring(1);
+        }
+        return path1 + path2;
+    }
+
     private <T extends BaseModel> T objectFromResponse(Class<T> cls, HttpResponse response) throws IOException {
         InputStream content = response.getEntity().getContent();
         byte[] bytes = ByteStreams.toByteArray(content);
@@ -532,6 +601,13 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
             builder.addInterceptorFirst(new PreemptiveAuth());
         }
         return builder;
+    }
+
+    private void getJenkinsVersionFromHeader(HttpResponse response) {
+        Header[] headers = response.getHeaders("X-Jenkins");
+        if (headers.length == 1) {
+            this.jenkinsVersion = headers[0].getValue();
+        }
     }
 
     protected HttpContext getLocalContext() {

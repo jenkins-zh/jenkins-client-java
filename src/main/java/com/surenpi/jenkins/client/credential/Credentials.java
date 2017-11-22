@@ -19,8 +19,13 @@ public class Credentials extends BaseManager {
     private String baseUrl = V2URL;
     private boolean isVersion1 = false;
 
-    public String create() {
-        return null;
+    public void create(Credential credential) throws IOException {
+        create(credential, false);
+    }
+
+    public void create(Credential credential, Boolean crumbFlag) throws IOException {
+        String url = String.format("%s/%s?", this.baseUrl, "createCredentials");
+        getClient().post_form_json(url, credential.dataForCreate(), crumbFlag);
     }
 
     public Map<String, Credential> list() throws IOException {
@@ -43,6 +48,39 @@ public class Credentials extends BaseManager {
             return credentialMap;
         }
     }
+
+    public void update(String credentialId, Credential credential) throws IOException {
+        update(credentialId, credential, false);
+    }
+
+    /**
+     * Update an existing credential.
+     * @param credentialId the id of the credential to update
+     * @param credential the credential to update
+     * @param crumbFlag
+     * @throws IOException
+     */
+    public void update(String credentialId, Credential credential, Boolean crumbFlag) throws IOException {
+        credential.setId(credentialId);
+        String url = String.format("%s/%s/%s/%s?", this.baseUrl, "credential", credentialId, "updateSubmit");
+        getClient().post_form_json(url, credential.dataForUpdate(), crumbFlag);
+    }
+
+    public void delete(String credentialId) throws IOException {
+        delete(credentialId, false);
+    }
+
+    /**
+     * Delete the credential with the given id
+     * @param credentialId the id of the credential
+     * @param crumbFlag
+     * @throws IOException
+     */
+    public void delete(String credentialId, Boolean crumbFlag) throws IOException {
+        String url = String.format("%s/%s/%s/%s?", this.baseUrl, "credential", credentialId, "doDelete");
+        getClient().post_form(url, new HashMap<String, String>(), crumbFlag);
+    }
+
     /**
      * Represents the list response from Jenkins with the 2.x credentials plugin
      */

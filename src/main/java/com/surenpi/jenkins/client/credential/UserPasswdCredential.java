@@ -15,6 +15,12 @@ public class UserPasswdCredential extends Credential {
         this.setTypeName(TYPENAME);
     }
 
+    public UserPasswdCredential(String userName, String password) {
+        this.setUsername(userName);
+        this.setPassword(password);
+        this.setTypeName(TYPENAME);
+    }
+
     public String getUsername() {
         if (this.username != null) {
             return this.username;

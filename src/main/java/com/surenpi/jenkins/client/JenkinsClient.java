@@ -43,4 +43,6 @@ public interface JenkinsClient {
     public void post(String path) throws IOException;
 
     public void post(String path, boolean crumbFlag) throws IOException;
+
+    public void post_form_json(String path, Map<String, Object> data, boolean crumbFlag) throws IOException;
 }
