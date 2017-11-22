@@ -40,7 +40,9 @@ public class Jenkins {
     }
 
     public Views getViews() {
-        return null;
+        Views views = new Views();
+        views.setClient(this.client);
+        return views;
     }
 
     public Workflows getWorkflows() {
