@@ -1,6 +1,7 @@
 package com.surenpi.jenkins.client;
 
 import com.surenpi.jenkins.client.computer.Computers;
+import com.surenpi.jenkins.client.core.OverLoad;
 import com.surenpi.jenkins.client.credential.Credentials;
 import com.surenpi.jenkins.client.folder.Folders;
 import com.surenpi.jenkins.client.job.Jobs;
@@ -70,6 +71,11 @@ public class Jenkins {
 
     public boolean isRunning() {
         return false;
+    }
+
+    public OverLoad getOverLoad() {
+//        http://localhost:8080/jenkins/overallLoad/api/json
+        return null;
     }
 
     public void shutdown() {
