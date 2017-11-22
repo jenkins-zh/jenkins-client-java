@@ -34,7 +34,9 @@ public class Jenkins {
     }
 
     public Jobs getJobs() {
-        return null;
+        Jobs jobs = new Jobs();
+        jobs.setClient(this.client);
+        return jobs;
     }
 
     public Views getViews() {
