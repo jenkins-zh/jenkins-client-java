@@ -1,7 +1,6 @@
 package com.surenpi.jenkins.client.credential;
 
 import com.surenpi.jenkins.client.Jenkins;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
