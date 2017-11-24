@@ -12,8 +12,8 @@
     <artifactId>jenkins.client.java</artifactId>
     <version>0.0.1-20171122-SNAPSHOT</version>
 
-    <name>phoenix.webui.framework</name>
-    <url>https://github.com/LinuxSuRen/phoenix.webui.framework</url>
+    <name>JenkinsJavaClient</name>
+    <url>https://github.com/suren-jenkins/jenkins-client-java</url>
 
     <properties>
         <testSkip>true</testSkip>
@@ -190,15 +190,15 @@
 
     <issueManagement>
         <system>GitHub Issues</system>
-        <url>https://github.com/LinuxSuRen/autotest.parent/issues</url>
+        <url>https://github.com/suren-jenkins/jenkins-client-java/issues</url>
     </issueManagement>
 
-    <description>基于Selenium的自动化测试框架Phoenix，采用Java语言编写的。到目前为止，已经覆盖了WebUI自动化测试过程中需要的大部分功能封装。</description>
+    <description>Java实现的对Jenkins操作</description>
 
     <ciManagement>
         <url>https://travis-ci.org/LinuxSuRen/phoenix.webui.framework</url>
         <system>travis-ci</system>
     </ciManagement>
 
-    <inceptionYear>2016</inceptionYear>
+    <inceptionYear>2017</inceptionYear>
 </project>
