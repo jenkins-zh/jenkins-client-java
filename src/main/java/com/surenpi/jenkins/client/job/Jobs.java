@@ -8,7 +8,8 @@ import com.surenpi.jenkins.client.util.UrlUtils;
 import java.io.IOException;
 
 /**
- * You can create, update, del a job througth this manager.
+ * You can create, update, del a job througth this manager.<br/>
+ * 你可以对Jenkins的任务做创建、更新、删除的操作
  * @author suren
  */
 public class Jobs extends BaseManager
@@ -61,12 +62,50 @@ public class Jobs extends BaseManager
     }
 
     /**
+     * 更新流水线
+     * @param folderJob
+     * @param jobName
+     * @param jobXml
+     * @param crumbFlag
+     * @throws IOException
+     */
+    public void update(FolderJob folderJob, String jobName, String jobXml, Boolean crumbFlag) throws IOException
+    {
+        String path = UrlUtils.toJobBaseUrl(folderJob, jobName) + "/config.xml";
+        getClient().post_xml(path, jobXml, crumbFlag);
+    }
+
+    /**
+     * @see #update(FolderJob, String, String, Boolean)
+     * @param jobName
+     * @param jobXml
+     * @param crumbFlag
+     * @throws IOException
+     */
+    public void update(String jobName, String jobXml, Boolean crumbFlag) throws IOException
+    {
+        update(null, jobName, jobXml, crumbFlag);
+    }
+
+    /**
+     * @see #update(String, String, Boolean)
+     * @param jobName
+     * @param jobXml
+     * @throws IOException
+     */
+    public void udpate(String jobName, String jobXml) throws IOException
+    {
+        update(jobName, jobXml, isCrumb());
+    }
+
+    /**
      * delete a job
      * @param folderJob
      * @param jobName
      * @param crumbFlag
      */
-    public void delete(FolderJob folderJob, String jobName, Boolean crumbFlag) throws IOException {
+    public void delete(FolderJob folderJob, String jobName, Boolean crumbFlag) throws IOException
+    {
         String path = UrlUtils.toJobBaseUrl(folderJob, jobName) + "/doDelete";
         getClient().post(path, crumbFlag);
     }
@@ -77,7 +116,8 @@ public class Jobs extends BaseManager
      * @param crumbFlag
      * @throws IOException
      */
-    public void delete(String jobName, Boolean crumbFlag) throws IOException {
+    public void delete(String jobName, Boolean crumbFlag) throws IOException
+    {
         delete(null, jobName, crumbFlag);
     }
 
