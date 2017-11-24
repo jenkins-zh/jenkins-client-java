@@ -45,7 +45,7 @@ public class Jobs extends BaseManager
      * @throws IOException
      */
     public void create(String jobName, String jobXml) throws IOException {
-        create(jobName, jobXml, false);
+        create(jobName, jobXml, isCrumb());
     }
 
     /**
@@ -88,7 +88,7 @@ public class Jobs extends BaseManager
      */
     public void delete(String jobName) throws IOException
     {
-        delete(jobName, false);
+        delete(jobName, isCrumb());
     }
 
     /**
@@ -110,7 +110,7 @@ public class Jobs extends BaseManager
      */
     public void disable(String jobName) throws IOException
     {
-        disable(jobName, false);
+        disable(jobName, isCrumb());
     }
 
     /**
@@ -131,6 +131,6 @@ public class Jobs extends BaseManager
      */
     public void enable(String jobName) throws IOException
     {
-        enable(jobName, false);
+        enable(jobName, isCrumb());
     }
 }

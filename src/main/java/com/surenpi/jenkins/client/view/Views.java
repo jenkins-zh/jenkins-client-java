@@ -8,6 +8,7 @@ import com.surenpi.jenkins.client.util.UrlUtils;
 import java.io.IOException;
 
 /**
+ * 视图管理
  * @author suren
  */
 public class Views extends BaseManager {
@@ -42,6 +43,6 @@ public class Views extends BaseManager {
      * @throws IOException
      */
     public void create(String viewName, String viewXml) throws IOException {
-        create(viewName, viewXml, false);
+        create(viewName, viewXml, isCrumb());
     }
 }

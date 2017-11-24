@@ -20,7 +20,7 @@ public class Credentials extends BaseManager {
     private boolean isVersion1 = false;
 
     public void create(Credential credential) throws IOException {
-        create(credential, false);
+        create(credential, isCrumb());
     }
 
     public void create(Credential credential, Boolean crumbFlag) throws IOException {
@@ -50,7 +50,7 @@ public class Credentials extends BaseManager {
     }
 
     public void update(String credentialId, Credential credential) throws IOException {
-        update(credentialId, credential, false);
+        update(credentialId, credential, isCrumb());
     }
 
     /**
@@ -67,7 +67,7 @@ public class Credentials extends BaseManager {
     }
 
     public void delete(String credentialId) throws IOException {
-        delete(credentialId, false);
+        delete(credentialId, isCrumb());
     }
 
     /**
