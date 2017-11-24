@@ -11,7 +11,8 @@ import java.io.IOException;
  * You can create, update, del a job througth this manager.
  * @author suren
  */
-public class Jobs extends BaseManager {
+public class Jobs extends BaseManager
+{
     /**
      * create a job inside the folder
      * @param folder
@@ -57,5 +58,79 @@ public class Jobs extends BaseManager {
         getClient().post(String.format("/createItem?mode=copy&from=%s&name=%s",
                 EncodingUtils.encodeParam(originName),
                 EncodingUtils.encodeParam(newName)));
+    }
+
+    /**
+     * delete a job
+     * @param folderJob
+     * @param jobName
+     * @param crumbFlag
+     */
+    public void delete(FolderJob folderJob, String jobName, Boolean crumbFlag) throws IOException {
+        String path = UrlUtils.toJobBaseUrl(folderJob, jobName) + "/doDelete";
+        getClient().post(path, crumbFlag);
+    }
+
+    /**
+     * @see #delete(FolderJob, String, Boolean)
+     * @param jobName
+     * @param crumbFlag
+     * @throws IOException
+     */
+    public void delete(String jobName, Boolean crumbFlag) throws IOException {
+        delete(null, jobName, crumbFlag);
+    }
+
+    /**
+     * @see #delete(String, Boolean)
+     * @param jobName
+     * @throws IOException
+     */
+    public void delete(String jobName) throws IOException
+    {
+        delete(jobName, false);
+    }
+
+    /**
+     * disable a job by jobName<br/>
+     * 禁用
+     * @param jobName
+     * @param crumbFlag
+     * @throws IOException
+     */
+    public void disable(String jobName, Boolean crumbFlag) throws IOException
+    {
+        getClient().post("/job/" + EncodingUtils.encode(jobName) + "/disable", crumbFlag);
+    }
+
+    /**
+     * @see #disable(String, Boolean)
+     * @param jobName
+     * @throws IOException
+     */
+    public void disable(String jobName) throws IOException
+    {
+        disable(jobName, false);
+    }
+
+    /**
+     * 启用
+     * @param jobName
+     * @param crumbFlag
+     * @throws IOException
+     */
+    public void enable(String jobName, Boolean crumbFlag) throws IOException
+    {
+        getClient().post("/job/" + EncodingUtils.encode(jobName) + "/enable", crumbFlag);
+    }
+
+    /**
+     * @see #enable(String, Boolean)
+     * @param jobName
+     * @throws IOException
+     */
+    public void enable(String jobName) throws IOException
+    {
+        enable(jobName, false);
     }
 }
