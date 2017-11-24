@@ -25,7 +25,7 @@ public class Credentials extends BaseManager {
 
     public void create(Credential credential, Boolean crumbFlag) throws IOException {
         String url = String.format("%s/%s?", this.baseUrl, "createCredentials");
-        getClient().post_form_json(url, credential.dataForCreate(), crumbFlag);
+        getClient().postFormJson(url, credential.dataForCreate(), crumbFlag);
     }
 
     public Map<String, Credential> list() throws IOException {
@@ -63,7 +63,7 @@ public class Credentials extends BaseManager {
     public void update(String credentialId, Credential credential, Boolean crumbFlag) throws IOException {
         credential.setId(credentialId);
         String url = String.format("%s/%s/%s/%s?", this.baseUrl, "credential", credentialId, "updateSubmit");
-        getClient().post_form_json(url, credential.dataForUpdate(), crumbFlag);
+        getClient().postFormJson(url, credential.dataForUpdate(), crumbFlag);
     }
 
     public void delete(String credentialId) throws IOException {
@@ -78,7 +78,7 @@ public class Credentials extends BaseManager {
      */
     public void delete(String credentialId, Boolean crumbFlag) throws IOException {
         String url = String.format("%s/%s/%s/%s?", this.baseUrl, "credential", credentialId, "doDelete");
-        getClient().post_form(url, new HashMap<String, String>(), crumbFlag);
+        getClient().postForm(url, new HashMap<String, String>(), crumbFlag);
     }
 
     /**
