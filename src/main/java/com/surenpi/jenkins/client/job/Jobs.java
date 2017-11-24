@@ -92,6 +92,45 @@ public class Jobs extends BaseManager
     }
 
     /**
+     * 重命名job名称
+     * @param folderJob
+     * @param oldName
+     * @param newName
+     * @param crumbFlag
+     * @throws IOException
+     */
+    public void rename(FolderJob folderJob, String oldName, String newName, Boolean crumbFlag)
+            throws IOException
+    {
+        String path = UrlUtils.toJobBaseUrl(folderJob, oldName)
+                + "/doRename?newName=" + EncodingUtils.encodeParam(newName);
+        getClient().post(path, crumbFlag);
+    }
+
+    /**
+     * @see #rename(FolderJob, String, String, Boolean)
+     * @param oldName
+     * @param newName
+     * @param crumbFlag
+     * @throws IOException
+     */
+    public void rename(String oldName, String newName, Boolean crumbFlag) throws IOException
+    {
+        rename(null, oldName, newName, crumbFlag);
+    }
+
+    /**
+     * @see #rename(String, String, Boolean)
+     * @param oldName
+     * @param newName
+     * @throws IOException
+     */
+    public void rename(String oldName, String newName) throws IOException
+    {
+        rename(oldName, newName, isCrumb());
+    }
+
+    /**
      * disable a job by jobName<br/>
      * 禁用
      * @param jobName
