@@ -281,7 +281,7 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
      * This method was added for the purposes of creating folders, but may be
          useful for other API calls as well.
 
-         Unlike post and post_xml, the path is *not* modified by adding
+         Unlike post and postXml, the path is *not* modified by adding
          "/toJsonApiUri/json". Additionally, the params in data are provided as both
          request parameters including a json parameter, *and* in the
          JSON-formatted StringEntity, because this is what the folder creation
@@ -294,7 +294,7 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
      * @throws IOException in case of an error.
      */
     @Override
-    public void post_form(String path, Map<String, String> data, boolean crumbFlag) throws IOException {
+    public void postForm(String path, Map<String, String> data, boolean crumbFlag) throws IOException {
         HttpPost request;
         if (data != null) {
             // https://gist.github.com/stuart-warren/7786892 was slightly
@@ -344,7 +344,7 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
      *             HttpResponseException
      */
     @Override
-    public HttpResponse post_form_with_result(String path, List<NameValuePair> data, boolean crumbFlag) throws IOException {
+    public HttpResponse postFormWithResult(String path, List<NameValuePair> data, boolean crumbFlag) throws IOException {
         HttpPost request;
         if (data != null) {
             UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(data);
@@ -375,12 +375,12 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
      * @throws IOException in case of an error.
      */
     @Override
-    public String post_xml(String path, String xml_data) throws IOException {
-        return post_xml(path, xml_data, true);
+    public String postXml(String path, String xml_data) throws IOException {
+        return postXml(path, xml_data, true);
     }
 
     @Override
-    public String post_xml(String path, String xml_data, boolean crumbFlag) throws IOException {
+    public String postXml(String path, String xml_data, boolean crumbFlag) throws IOException {
         HttpPost request = new HttpPost(UrlUtils.toJsonApiUri(uri, context, path));
         if (crumbFlag == true) {
             Crumb crumb = getQuietly("/crumbIssuer", Crumb.class);
@@ -413,8 +413,8 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
      * @throws IOException in case of an error.
      */
     @Override
-    public String post_text(String path, String textData, boolean crumbFlag) throws IOException {
-        return post_text(path, textData, ContentType.DEFAULT_TEXT, crumbFlag);
+    public String postText(String path, String textData, boolean crumbFlag) throws IOException {
+        return postText(path, textData, ContentType.DEFAULT_TEXT, crumbFlag);
     }
 
     /**
@@ -428,7 +428,7 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
      * @throws IOException in case of an error.
      */
     @Override
-    public String post_text(String path, String textData, ContentType contentType, boolean crumbFlag)
+    public String postText(String path, String textData, ContentType contentType, boolean crumbFlag)
             throws IOException {
         HttpPost request = new HttpPost(UrlUtils.toJsonApiUri(uri, context, path));
         if (crumbFlag == true) {
@@ -474,7 +474,7 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
      * This method was added for the purposes of creating credentials, but may be
      * useful for other API calls as well.
      *
-     * Unlike post and post_xml, the path is *not* modified by adding
+     * Unlike post and postXml, the path is *not* modified by adding
      * "/api/json". Additionally, the params in data are provided as both
      * request parameters including a json parameter, *and* in the
      * JSON-formatted StringEntity, because this is what the folder creation
@@ -486,7 +486,7 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
      * @param crumbFlag true / false.
      * @throws IOException in case of an error.
      */
-    public void post_form_json(String path, Map<String, Object> data, boolean crumbFlag) throws IOException {
+    public void postFormJson(String path, Map<String, Object> data, boolean crumbFlag) throws IOException {
         HttpPost request;
         if (data != null) {
             // https://gist.github.com/stuart-warren/7786892 was slightly

@@ -27,22 +27,22 @@ public interface JenkinsClient {
 
     public <R extends BaseModel, D> R post(String path, D data, Class<R> cls, boolean crumbFlag) throws IOException;
 
-    public void post_form(String path, Map<String, String> data, boolean crumbFlag) throws IOException;
+    public void postForm(String path, Map<String, String> data, boolean crumbFlag) throws IOException;
 
-    public HttpResponse post_form_with_result(String path, List<NameValuePair> data, boolean crumbFlag) throws IOException;
+    public HttpResponse postFormWithResult(String path, List<NameValuePair> data, boolean crumbFlag) throws IOException;
 
-    public String post_xml(String path, String xml_data) throws IOException;
+    public String postXml(String path, String xml_data) throws IOException;
 
-    public String post_xml(String path, String xml_data, boolean crumbFlag) throws IOException;
+    public String postXml(String path, String xml_data, boolean crumbFlag) throws IOException;
 
-    public String post_text(String path, String textData, boolean crumbFlag) throws IOException;
+    public String postText(String path, String textData, boolean crumbFlag) throws IOException;
 
-    public String post_text(String path, String textData, ContentType contentType, boolean crumbFlag)
+    public String postText(String path, String textData, ContentType contentType, boolean crumbFlag)
             throws IOException;
 
     public void post(String path) throws IOException;
 
     public void post(String path, boolean crumbFlag) throws IOException;
 
-    public void post_form_json(String path, Map<String, Object> data, boolean crumbFlag) throws IOException;
+    public void postFormJson(String path, Map<String, Object> data, boolean crumbFlag) throws IOException;
 }
