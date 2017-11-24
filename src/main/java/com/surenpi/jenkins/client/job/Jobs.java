@@ -25,7 +25,7 @@ public class Jobs extends BaseManager
     public void create(FolderJob folder, String jobName, String jobXml, Boolean crumFlag) throws IOException {
         String path = UrlUtils.toBaseUrl(folder) + "createItem?name=" + EncodingUtils.encodeParam(jobName);
 
-        getClient().post_xml(path, jobXml, crumFlag);
+        getClient().postXml(path, jobXml, crumFlag);
     }
 
     /**
@@ -72,7 +72,7 @@ public class Jobs extends BaseManager
     public void update(FolderJob folderJob, String jobName, String jobXml, Boolean crumbFlag) throws IOException
     {
         String path = UrlUtils.toJobBaseUrl(folderJob, jobName) + "/config.xml";
-        getClient().post_xml(path, jobXml, crumbFlag);
+        getClient().postXml(path, jobXml, crumbFlag);
     }
 
     /**
@@ -168,6 +168,29 @@ public class Jobs extends BaseManager
     public void rename(String oldName, String newName) throws IOException
     {
         rename(oldName, newName, isCrumb());
+    }
+
+    /**
+     * 获取job的xml配置内容
+     * @param folderJob
+     * @param jobName
+     * @return
+     * @throws IOException
+     */
+    public String getXml(FolderJob folderJob, String jobName) throws IOException
+    {
+        return getClient().get(UrlUtils.toJobBaseUrl(folderJob, jobName) + "/config.xml");
+    }
+
+    /**
+     * @see #getXml(FolderJob, String)
+     * @param jobName
+     * @return
+     * @throws IOException
+     */
+    public String getXml(String jobName) throws IOException
+    {
+        return getXml(null, jobName);
     }
 
     /**
