@@ -26,6 +26,11 @@ public class Jenkins {
         this(new JenkinsHttpClient(uri));
     }
 
+    public Jenkins(URI uri, String userName, String password)
+    {
+        this(new JenkinsHttpClient(uri, userName, password));
+    }
+
     public Jenkins(JenkinsHttpClient client) {
         this.client = client;
     }
