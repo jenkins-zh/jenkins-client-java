@@ -18,12 +18,13 @@ public class JobsTest {
     @BeforeClass
     public static void init() throws URISyntaxException {
         jobs = new Jenkins(
-                new URI("http://localhost:8080/jenkins")).getJobs();
+                new URI("http://localhost:8080/jenkins"), "admin", "admin").getJobs();
     }
 
     @Test
     public void create() throws IOException {
-        jobs.create(jobName, JOB_XML);
+        jobs.setCrumb(true);
+        jobs.create(jobName + "-" + System.currentTimeMillis(), JOB_XML);
     }
 
     public static final String JOB_XML = "<?xml version='1.0' encoding='UTF-8'?>\n" +

@@ -93,7 +93,7 @@ public class Jobs extends BaseManager
      * @param jobXml
      * @throws IOException
      */
-    public void udpate(String jobName, String jobXml) throws IOException
+    public void update(String jobName, String jobXml) throws IOException
     {
         update(jobName, jobXml, isCrumb());
     }
