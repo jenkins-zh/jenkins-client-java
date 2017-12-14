@@ -502,7 +502,7 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
         }
 
         if (crumbFlag == true) {
-            Crumb crumb = get("/crumbIssuer", Crumb.class);
+            Crumb crumb = getQuietly("/crumbIssuer", Crumb.class);
             if (crumb != null) {
                 request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
             }
