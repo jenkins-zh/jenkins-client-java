@@ -202,7 +202,7 @@ public class Jobs extends BaseManager
      */
     public void disable(String jobName, Boolean crumbFlag) throws IOException
     {
-        getClient().post("/job/" + EncodingUtils.encode(jobName) + "/disable", crumbFlag);
+        getClient().post("/job/" + EncodingUtils.encode(jobName) + "/disable", isCrumb());
     }
 
     /**
@@ -223,7 +223,7 @@ public class Jobs extends BaseManager
      */
     public void enable(String jobName, Boolean crumbFlag) throws IOException
     {
-        getClient().post("/job/" + EncodingUtils.encode(jobName) + "/enable", crumbFlag);
+        getClient().post("/job/" + EncodingUtils.encode(jobName) + "/enable", isCrumb());
     }
 
     /**
@@ -234,6 +234,16 @@ public class Jobs extends BaseManager
     public void enable(String jobName) throws IOException
     {
         enable(jobName, isCrumb());
+    }
+
+    /**
+     * Build a job by name
+     * @param jobName
+     * @throws IOException
+     */
+    public void build(String jobName) throws IOException
+    {
+        getClient().post("/job/" + EncodingUtils.encode(jobName) + "/build", isCrumb());
     }
 
     @Override

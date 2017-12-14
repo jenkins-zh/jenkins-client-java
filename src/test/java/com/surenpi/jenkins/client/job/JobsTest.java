@@ -27,6 +27,12 @@ public class JobsTest {
         jobs.create(jobName + "-" + System.currentTimeMillis(), JOB_XML);
     }
 
+    @Test
+    public void build() throws IOException
+    {
+        jobs.build("common");
+    }
+
     public static final String JOB_XML = "<?xml version='1.0' encoding='UTF-8'?>\n" +
             "<project>\n" +
             "  <description></description>\n" +
