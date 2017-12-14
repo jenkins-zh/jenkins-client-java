@@ -8,4 +8,9 @@ import com.surenpi.jenkins.client.BaseManager;
  */
 public class Computers extends BaseManager
 {
+    @Override
+    protected String[] getDependencyArray()
+    {
+        return null;
+    }
 }

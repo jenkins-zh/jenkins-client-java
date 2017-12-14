@@ -235,4 +235,10 @@ public class Jobs extends BaseManager
     {
         enable(jobName, isCrumb());
     }
+
+    @Override
+    protected String[] getDependencyArray()
+    {
+        return new String[0];
+    }
 }

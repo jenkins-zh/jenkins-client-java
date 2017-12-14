@@ -8,4 +8,9 @@ import com.surenpi.jenkins.client.BaseManager;
  */
 public class Workflows extends BaseManager
 {
+    @Override
+    protected String[] getDependencyArray()
+    {
+        return new String[]{"pipeline-rest-api"};
+    }
 }

@@ -12,7 +12,8 @@ import java.util.Map;
  * Jenkins Credentials Managers
  * @author suren
  */
-public class Credentials extends BaseManager {
+public class Credentials extends BaseManager
+{
     public static final String V1URL = "/credential-store/domain/_";
     public static final String V2URL = "/credentials/store/system/domain/_";
 
@@ -111,5 +112,11 @@ public class Credentials extends BaseManager {
             this.credentials = credentials;
         }
 
+    }
+
+    @Override
+    protected String[] getDependencyArray()
+    {
+        return new String[0];
     }
 }

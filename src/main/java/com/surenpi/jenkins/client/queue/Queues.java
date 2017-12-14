@@ -7,4 +7,9 @@ import com.surenpi.jenkins.client.BaseManager;
  */
 public class Queues extends BaseManager
 {
+    @Override
+    protected String[] getDependencyArray()
+    {
+        return null;
+    }
 }

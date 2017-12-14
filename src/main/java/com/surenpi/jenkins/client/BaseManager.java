@@ -1,5 +1,9 @@
 package com.surenpi.jenkins.client;
 
+import com.surenpi.jenkins.client.plugin.Plugins;
+
+import java.io.IOException;
+
 /**
  * @author suren
  */
@@ -24,5 +28,19 @@ public abstract class BaseManager {
     public void setCrumb(boolean crumb)
     {
         this.crumb = crumb;
+    }
+
+    protected abstract String[] getDependencyArray();
+
+    /**
+     * 插件依赖是否满足的检查
+     * @return 依赖满足返回true
+     */
+    public boolean dependencyCheck() throws IOException
+    {
+        Plugins plugins = new Plugins();
+        plugins.setClient(getClient());
+
+        return plugins.pluginsExists(getDependencyArray());
     }
 }

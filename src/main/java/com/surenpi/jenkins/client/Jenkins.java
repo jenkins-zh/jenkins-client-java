@@ -71,7 +71,9 @@ public class Jenkins {
     }
 
     public Plugins getPlugins() {
-        return null;
+        Plugins plugins = new Plugins();
+        plugins.setClient(this.client);
+        return plugins;
     }
 
     public boolean isRunning() {

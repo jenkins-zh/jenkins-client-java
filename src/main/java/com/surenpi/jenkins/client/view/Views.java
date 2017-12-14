@@ -86,4 +86,10 @@ public class Views extends BaseManager
     {
         update(viewName, viewXml, isCrumb());
     }
+
+    @Override
+    protected String[] getDependencyArray()
+    {
+        return null;
+    }
 }

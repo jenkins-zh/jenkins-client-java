@@ -60,4 +60,10 @@ public class Folders extends BaseManager
     {
         this.folderCls = folderCls;
     }
+
+    @Override
+    protected String[] getDependencyArray()
+    {
+        return new String[0];
+    }
 }
