@@ -56,7 +56,9 @@ public class Jenkins {
     }
 
     public Computers getComputers() {
-        return null;
+        Computers computers = new Computers();
+        computers.setClient(this.client);
+        return computers;
     }
 
     /**

@@ -19,7 +19,8 @@ public class CredentialsTest {
     @BeforeClass
     public static void init() throws URISyntaxException {
         credentials = new Jenkins(
-                new URI("http://localhost:8080/jenkins")).getCredentials();
+                new URI("http://localhost:8080/jenkins"),
+                "admin", "admin").getCredentials();
     }
 
     @Test
