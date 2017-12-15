@@ -1,6 +1,7 @@
 package com.surenpi.jenkins.client;
 
 import com.surenpi.jenkins.client.computer.Computers;
+import com.surenpi.jenkins.client.computer.Labels;
 import com.surenpi.jenkins.client.core.OverLoad;
 import com.surenpi.jenkins.client.credential.Credentials;
 import com.surenpi.jenkins.client.folder.Folders;
@@ -59,6 +60,13 @@ public class Jenkins {
         Computers computers = new Computers();
         computers.setClient(this.client);
         return computers;
+    }
+
+    public Labels getLabels()
+    {
+        Labels labels = new Labels();
+        labels.setClient(this.client);
+        return labels;
     }
 
     /**

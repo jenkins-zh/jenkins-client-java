@@ -5,6 +5,7 @@ import com.surenpi.jenkins.client.BaseModel;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +49,34 @@ public class Credentials extends BaseManager
             }
             return credentialMap;
         }
+    }
+
+    /**
+     * Check target credential is exists by id.
+     * @param credentialId
+     * @return
+     * @throws IOException
+     */
+    public boolean exists(String credentialId) throws IOException
+    {
+        if(credentialId == null)
+        {
+            return false;
+        }
+
+        Map<String, Credential> credentialMap = list();
+        Iterator<String> it = credentialMap.keySet().iterator();
+        while(it.hasNext())
+        {
+            String key = it.next();
+
+            if(credentialId.equals(credentialMap.get(key).getId()))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void update(String credentialId, Credential credential) throws IOException {

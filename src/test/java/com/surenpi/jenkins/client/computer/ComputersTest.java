@@ -37,7 +37,6 @@ public class ComputersTest
         List<ComputerWithDetails> computerDetailList = computers.getComputerSet().getComputers();
         for(ComputerWithDetails detail : computerDetailList)
         {
-//            System.out.println(detail.getActions());
             System.out.println(detail);
 
             LoadStatistics load = detail.getLoadStatistics();

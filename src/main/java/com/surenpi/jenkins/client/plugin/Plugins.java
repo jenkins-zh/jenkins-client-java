@@ -57,6 +57,11 @@ public class Plugins extends BaseManager
         return true;
     }
 
+    public void upload()
+    {
+//        http://localhost:8080/jenkins/pluginManager/uploadPlugin
+    }
+
     @Override
     protected String[] getDependencyArray()
     {
