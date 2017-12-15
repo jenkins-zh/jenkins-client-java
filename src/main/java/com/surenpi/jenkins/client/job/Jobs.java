@@ -1,6 +1,7 @@
 package com.surenpi.jenkins.client.job;
 
 import com.surenpi.jenkins.client.BaseManager;
+import com.surenpi.jenkins.client.core.JenkinsInfo;
 import com.surenpi.jenkins.client.folder.FolderJob;
 import com.surenpi.jenkins.client.util.EncodingUtils;
 import com.surenpi.jenkins.client.util.UrlUtils;
@@ -271,6 +272,11 @@ public class Jobs extends BaseManager
         }
 
         getClient().post(urlBuf.toString(), isCrumb());
+    }
+
+    public JenkinsInfo getAll() throws IOException
+    {
+        return getClient().get("/", JenkinsInfo.class);
     }
 
     @Override

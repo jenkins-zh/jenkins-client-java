@@ -1,6 +1,7 @@
 package com.surenpi.jenkins.client.job;
 
 import com.surenpi.jenkins.client.Jenkins;
+import com.surenpi.jenkins.client.core.JenkinsInfo;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -40,6 +41,13 @@ public class JobsTest {
     {
         Map<String, String> params = Collections.singletonMap("a", "a");
         jobs.buildWithParams("free", params);
+    }
+
+    @Test
+    public void jenkinsInfo() throws IOException
+    {
+        JenkinsInfo info = jobs.getAll();
+        System.out.println(info);
     }
 
     public static final String JOB_XML = "<?xml version='1.0' encoding='UTF-8'?>\n" +
