@@ -7,6 +7,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * @author suren
@@ -31,6 +33,13 @@ public class JobsTest {
     public void build() throws IOException
     {
         jobs.build("common");
+    }
+
+    @Test
+    public void buildWithParams() throws IOException
+    {
+        Map<String, String> params = Collections.singletonMap("a", "a");
+        jobs.buildWithParams("free", params);
     }
 
     public static final String JOB_XML = "<?xml version='1.0' encoding='UTF-8'?>\n" +

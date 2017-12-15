@@ -6,6 +6,8 @@ import com.surenpi.jenkins.client.util.EncodingUtils;
 import com.surenpi.jenkins.client.util.UrlUtils;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * You can create, update, del a job througth this manager.<br/>
@@ -244,6 +246,31 @@ public class Jobs extends BaseManager
     public void build(String jobName) throws IOException
     {
         getClient().post("/job/" + EncodingUtils.encode(jobName) + "/build", isCrumb());
+    }
+
+    /**
+     * Build a job with params<br>
+     * 构建参数化的任务
+     * @param jobName job name
+     * @param params param map
+     * @throws IOException
+     */
+    public void buildWithParams(String jobName, Map<String, String> params) throws IOException
+    {
+        StringBuffer urlBuf = new StringBuffer();
+        urlBuf.append("/job/");
+        urlBuf.append(EncodingUtils.encode(jobName));
+        urlBuf.append("/buildWithParameters/?1=1");
+
+        Iterator<String> it = params.keySet().iterator();
+        while(it.hasNext())
+        {
+            String key = it.next();
+            String value = params.get(key);
+            urlBuf.append("&").append(key).append("=").append(value);
+        }
+
+        getClient().post(urlBuf.toString(), isCrumb());
     }
 
     @Override
