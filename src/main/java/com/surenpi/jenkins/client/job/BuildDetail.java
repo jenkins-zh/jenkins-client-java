@@ -3,6 +3,7 @@ package com.surenpi.jenkins.client.job;
 import com.surenpi.jenkins.client.BaseModel;
 import com.surenpi.jenkins.client.core.Artifact;
 import com.surenpi.jenkins.client.core.BuildResult;
+import com.surenpi.jenkins.client.scm.ScmChangeInfo;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class BuildDetail extends BaseModel
     private BuildResult result;
     private long timestamp;
     private String url;
+    private List<ScmChangeInfo> changeSets;
     private BuildInfo nextBuild;
     private BuildInfo previousBuild;
 
@@ -167,6 +169,16 @@ public class BuildDetail extends BaseModel
     public void setUrl(String url)
     {
         this.url = url;
+    }
+
+    public List<ScmChangeInfo> getChangeSets()
+    {
+        return changeSets;
+    }
+
+    public void setChangeSets(List<ScmChangeInfo> changeSets)
+    {
+        this.changeSets = changeSets;
     }
 
     public BuildInfo getNextBuild()

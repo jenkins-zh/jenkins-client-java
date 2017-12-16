@@ -70,6 +70,13 @@ public class JobsTest {
         jobs.getDetails(String.valueOf(System.currentTimeMillis()));
     }
 
+    @Test
+    public void getBuildDetails() throws IOException
+    {
+        BuildDetail buildDetails = jobs.getBuildDetails("common-devops-server", 6);
+        System.out.println(buildDetails);
+    }
+
     public static final String JOB_XML = "<?xml version='1.0' encoding='UTF-8'?>\n" +
             "<project>\n" +
             "  <description></description>\n" +

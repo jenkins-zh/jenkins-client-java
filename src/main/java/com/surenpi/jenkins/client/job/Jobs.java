@@ -328,6 +328,18 @@ public class Jobs extends BaseManager
         return getClient().get("/job/" + EncodingUtils.encode(jobName), JobDetails.class);
     }
 
+    /**
+     * 获取某一次构建的详细信息
+     * @param jobName 任务名称
+     * @param number 构建号
+     * @return 构建详细信息
+     * @throws IOException
+     */
+    public BuildDetail getBuildDetails(String jobName, int number) throws IOException
+    {
+        return getClient().get("/job/" + EncodingUtils.encode(jobName) + "/" + number, BuildDetail.class);
+    }
+
     @Override
     protected String[] getDependencyArray()
     {
