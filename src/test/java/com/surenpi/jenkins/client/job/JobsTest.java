@@ -2,6 +2,7 @@ package com.surenpi.jenkins.client.job;
 
 import com.surenpi.jenkins.client.Jenkins;
 import com.surenpi.jenkins.client.core.JenkinsInfo;
+import org.apache.http.client.HttpResponseException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -44,10 +45,29 @@ public class JobsTest {
     }
 
     @Test
+    public void batchDel() throws IOException
+    {
+        jobs.batchDel(jobName);
+    }
+
+    @Test
     public void jenkinsInfo() throws IOException
     {
         JenkinsInfo info = jobs.getAll();
         System.out.println(info);
+    }
+
+    @Test
+    public void getDetails() throws IOException
+    {
+        JobDetails details = jobs.getDetails("common-devops-server");
+        System.out.println(details);
+    }
+
+    @Test(expected = HttpResponseException.class)
+    public void getNotExistsJob() throws IOException
+    {
+        jobs.getDetails(String.valueOf(System.currentTimeMillis()));
     }
 
     public static final String JOB_XML = "<?xml version='1.0' encoding='UTF-8'?>\n" +

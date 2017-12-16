@@ -8,10 +8,11 @@ import com.surenpi.jenkins.client.util.UrlUtils;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
- * You can create, update, del a job througth this manager.<br/>
+ * You can create, update, del a job through this manager.<br/>
  * 你可以对Jenkins的任务做创建、更新、删除的操作
  * @author suren
  */
@@ -25,7 +26,8 @@ public class Jobs extends BaseManager
      * @param crumFlag
      * @throws IOException
      */
-    public void create(FolderJob folder, String jobName, String jobXml, Boolean crumFlag) throws IOException {
+    public void create(FolderJob folder, String jobName, String jobXml, Boolean crumFlag) throws IOException
+    {
         String path = UrlUtils.toBaseUrl(folder) + "createItem?name=" + EncodingUtils.encodeParam(jobName);
 
         getClient().postXml(path, jobXml, crumFlag);
@@ -38,7 +40,8 @@ public class Jobs extends BaseManager
      * @param crumFlag
      * @throws IOException
      */
-    public void create(String jobName, String jobXml, Boolean crumFlag) throws IOException {
+    public void create(String jobName, String jobXml, Boolean crumFlag) throws IOException
+    {
         create(null, jobName, jobXml, crumFlag);
     }
 
@@ -48,7 +51,8 @@ public class Jobs extends BaseManager
      * @param jobXml
      * @throws IOException
      */
-    public void create(String jobName, String jobXml) throws IOException {
+    public void create(String jobName, String jobXml) throws IOException
+    {
         create(jobName, jobXml, isCrumb());
     }
 
@@ -58,7 +62,8 @@ public class Jobs extends BaseManager
      * @param newName
      * @throws IOException
      */
-    public void copy(String originName, String newName) throws IOException {
+    public void copy(String originName, String newName) throws IOException
+    {
         getClient().post(String.format("/createItem?mode=copy&from=%s&name=%s",
                 EncodingUtils.encodeParam(originName),
                 EncodingUtils.encodeParam(newName)));
@@ -132,6 +137,33 @@ public class Jobs extends BaseManager
     public void delete(String jobName) throws IOException
     {
         delete(jobName, isCrumb());
+    }
+
+    /**
+     * 批量删除任务（job）
+     * @param prefixName
+     * @return
+     * @throws IOException
+     */
+    public int batchDel(String prefixName) throws IOException
+    {
+        List<Job> allJobs = getAllJobs();
+        int count = 0;
+        if(allJobs == null)
+        {
+            return count;
+        }
+
+        for(Job job : allJobs)
+        {
+            if(job.getName().startsWith(prefixName))
+            {
+                delete(job.getName());
+                count++;
+            }
+        }
+
+        return count;
     }
 
     /**
@@ -277,6 +309,23 @@ public class Jobs extends BaseManager
     public JenkinsInfo getAll() throws IOException
     {
         return getClient().get("/", JenkinsInfo.class);
+    }
+
+    /**
+     * 获取所有的任务（job）
+     * @return
+     * @throws IOException
+     */
+    public List<Job> getAllJobs() throws IOException
+    {
+        JenkinsInfo jenkinsInfo = getAll();
+
+        return jenkinsInfo.getJobs();
+    }
+
+    public JobDetails getDetails(String jobName) throws IOException
+    {
+        return getClient().get("/job/" + EncodingUtils.encode(jobName), JobDetails.class);
     }
 
     @Override
