@@ -19,6 +19,12 @@ public class Job extends BaseModel {
 
     public Job() {
     }
+
+    public Job(String name)
+    {
+        this();
+        this.name = name;
+    }
     
     public Job(String name, String url) {
         this();

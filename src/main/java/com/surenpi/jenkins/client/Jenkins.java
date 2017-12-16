@@ -36,8 +36,11 @@ public class Jenkins {
         this.client = client;
     }
 
-    public Folders getFolders() {
-        return null;
+    public Folders getFolders()
+    {
+        Folders folders = new Folders();
+        folders.setClient(this.client);
+        return folders;
     }
 
     public Jobs getJobs() {

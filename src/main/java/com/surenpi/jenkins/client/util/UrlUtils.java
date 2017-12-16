@@ -35,7 +35,8 @@ public final class UrlUtils {
      * @param folder the folder or {@code null}
      * @return The created base url.
      */
-    public static String toBaseUrl(final FolderJob folder) {
+    public static String toBaseUrl(final FolderJob folder)
+    {
         return folder == null ? "/" : folder.getUrl();
     }
     

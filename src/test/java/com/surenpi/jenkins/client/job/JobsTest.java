@@ -2,6 +2,7 @@ package com.surenpi.jenkins.client.job;
 
 import com.surenpi.jenkins.client.Jenkins;
 import com.surenpi.jenkins.client.core.JenkinsInfo;
+import com.surenpi.jenkins.client.folder.FolderJob;
 import org.apache.http.client.HttpResponseException;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,15 +21,21 @@ public class JobsTest {
     private final String jobName = "hello";
 
     @BeforeClass
-    public static void init() throws URISyntaxException {
+    public static void init() throws URISyntaxException
+    {
         jobs = new Jenkins(
                 new URI("http://localhost:8080/jenkins"), "admin", "admin").getJobs();
     }
 
     @Test
-    public void create() throws IOException {
-        jobs.setCrumb(true);
+    public void create() throws IOException
+    {
         jobs.create(jobName + "-" + System.currentTimeMillis(), JOB_XML);
+
+        jobs.create(new FolderJob("folder"), jobName + "-" + System.currentTimeMillis(), JOB_XML);
+
+        jobs.create(new FolderJob("folder-" + System.currentTimeMillis()),
+                jobName + "-" + System.currentTimeMillis(), JOB_XML, true, true);
     }
 
     @Test
@@ -75,6 +82,13 @@ public class JobsTest {
     {
         BuildDetail buildDetails = jobs.getBuildDetails("common-devops-server", 6);
         System.out.println(buildDetails);
+    }
+
+    @Test
+    public void getXml() throws IOException
+    {
+        String xml = jobs.getXml("free");
+        System.out.println(xml);
     }
 
     public static final String JOB_XML = "<?xml version='1.0' encoding='UTF-8'?>\n" +

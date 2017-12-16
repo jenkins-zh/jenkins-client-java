@@ -51,6 +51,23 @@ public class Folders extends BaseManager
         create(folderName, isCrumb());
     }
 
+    public String getXml(String folderName) throws IOException
+    {
+        return getClient().get("/job/" + EncodingUtils.encode(folderName) + "/config.xml");
+    }
+
+    public boolean exists(String folderName) throws IOException
+    {
+        try
+        {
+            return getXml(folderName) != null;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
     public String getFolderCls()
     {
         return folderCls;

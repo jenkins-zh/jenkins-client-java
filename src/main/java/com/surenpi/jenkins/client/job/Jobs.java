@@ -3,6 +3,7 @@ package com.surenpi.jenkins.client.job;
 import com.surenpi.jenkins.client.BaseManager;
 import com.surenpi.jenkins.client.core.JenkinsInfo;
 import com.surenpi.jenkins.client.folder.FolderJob;
+import com.surenpi.jenkins.client.folder.Folders;
 import com.surenpi.jenkins.client.util.EncodingUtils;
 import com.surenpi.jenkins.client.util.UrlUtils;
 
@@ -31,6 +32,30 @@ public class Jobs extends BaseManager
         String path = UrlUtils.toBaseUrl(folder) + "createItem?name=" + EncodingUtils.encodeParam(jobName);
 
         getClient().postXml(path, jobXml, crumFlag);
+    }
+
+    public void create(FolderJob folderJob, String jobName, String jobXml, boolean crumFlag, boolean createFolder) throws IOException
+    {
+        if(createFolder)
+        {
+            Folders folders = new Folders();
+            folders.setClient(getClient());
+            boolean exists = folders.exists(folderJob.getName());
+
+            if(!exists)
+            {
+                folders.create(folderJob.getName());
+            }
+        }
+
+        create(folderJob, jobName, jobXml, crumFlag);
+    }
+
+    public void create(FolderJob folderJob, String jobName, String jobXml) throws IOException
+    {
+        String path = UrlUtils.toBaseUrl(folderJob) + "createItem?name=" + EncodingUtils.encodeParam(jobName);
+
+        getClient().postXml(path, jobXml);
     }
 
     /**
@@ -214,7 +239,7 @@ public class Jobs extends BaseManager
      */
     public String getXml(FolderJob folderJob, String jobName) throws IOException
     {
-        return getClient().get(UrlUtils.toJobBaseUrl(folderJob, jobName) + "/getXml.xml");
+        return getClient().get(UrlUtils.toJobBaseUrl(folderJob, jobName) + "/config.xml");
     }
 
     /**
