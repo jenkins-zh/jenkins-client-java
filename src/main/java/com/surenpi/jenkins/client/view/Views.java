@@ -87,6 +87,11 @@ public class Views extends BaseManager
         update(viewName, viewXml, isCrumb());
     }
 
+    public View info(String viewName) throws IOException
+    {
+        return getClient().get("/view/" + EncodingUtils.encode(viewName), View.class);
+    }
+
     @Override
     protected String[] getDependencyArray()
     {

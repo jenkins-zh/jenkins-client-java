@@ -1,5 +1,6 @@
 package com.surenpi.jenkins.client.view;
 
+import com.surenpi.jenkins.client.ConstantsForTest;
 import com.surenpi.jenkins.client.Jenkins;
 import com.surenpi.jenkins.client.job.Jobs;
 import org.junit.BeforeClass;
@@ -17,14 +18,25 @@ public class ViewsTest {
     private final String viewName = "hello";
 
     @BeforeClass
-    public static void init() throws URISyntaxException {
+    public static void init() throws URISyntaxException
+    {
         views = new Jenkins(
-                new URI("http://localhost:8080/jenkins")).getViews();
+                new URI(ConstantsForTest.JENKINS_URL),
+                ConstantsForTest.JENKINS_USER,
+                ConstantsForTest.JENKINS_PASSWD).getViews();
     }
 
     @Test
-    public void create() throws IOException {
+    public void create() throws IOException
+    {
         views.create(viewName, VIEW_XML);
+    }
+
+    @Test
+    public void info() throws IOException
+    {
+        View view = views.info("aaa");
+        System.out.println(view);
     }
 
     public static final String VIEW_XML = "";
