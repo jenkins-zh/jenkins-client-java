@@ -79,7 +79,7 @@ public class Jobs extends BaseManager
      */
     public void update(FolderJob folderJob, String jobName, String jobXml, Boolean crumbFlag) throws IOException
     {
-        String path = UrlUtils.toJobBaseUrl(folderJob, jobName) + "/config.xml";
+        String path = UrlUtils.toJobBaseUrl(folderJob, jobName) + "/getXml.xml";
         getClient().postXml(path, jobXml, crumbFlag);
     }
 
@@ -214,7 +214,7 @@ public class Jobs extends BaseManager
      */
     public String getXml(FolderJob folderJob, String jobName) throws IOException
     {
-        return getClient().get(UrlUtils.toJobBaseUrl(folderJob, jobName) + "/config.xml");
+        return getClient().get(UrlUtils.toJobBaseUrl(folderJob, jobName) + "/getXml.xml");
     }
 
     /**

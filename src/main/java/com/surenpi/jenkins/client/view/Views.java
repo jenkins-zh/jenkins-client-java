@@ -60,7 +60,7 @@ public class Views extends BaseManager
      */
     public void update(FolderJob folder, String viewName, String viewXml, boolean crumbFlag) throws IOException
     {
-        String path = UrlUtils.toBaseUrl(folder) + "view/" + EncodingUtils.encode(viewName) + "/config.xml";
+        String path = UrlUtils.toBaseUrl(folder) + "view/" + EncodingUtils.encode(viewName) + "/getXml.xml";
         getClient().postXml(path, viewXml, crumbFlag);
     }
 
@@ -87,9 +87,20 @@ public class Views extends BaseManager
         update(viewName, viewXml, isCrumb());
     }
 
+    /**
+     * 获取视图信息
+     * @param viewName
+     * @return
+     * @throws IOException
+     */
     public View info(String viewName) throws IOException
     {
         return getClient().get("/view/" + EncodingUtils.encode(viewName), View.class);
+    }
+
+    public String getXml(String viewName) throws IOException
+    {
+        return getClient().get("/view/" + EncodingUtils.encode(viewName) + "/getXml.xml");
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.surenpi.jenkins.client.view;
 
 import com.surenpi.jenkins.client.ConstantsForTest;
 import com.surenpi.jenkins.client.Jenkins;
-import com.surenpi.jenkins.client.job.Jobs;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -35,9 +34,36 @@ public class ViewsTest {
     @Test
     public void info() throws IOException
     {
-        View view = views.info("aaa");
+        View view = views.info(viewName);
         System.out.println(view);
     }
 
-    public static final String VIEW_XML = "";
+    @Test
+    public void getXml() throws IOException
+    {
+        String viewXmlConfig = views.getXml(viewName);
+        System.out.println(viewXmlConfig);
+    }
+
+    public static final String VIEW_XML = "<hudson.model.ListView>\n" +
+            "    <name>rrr</name>\n" +
+            "    <filterExecutors>false</filterExecutors>\n" +
+            "    <filterQueue>false</filterQueue>\n" +
+            "    <properties class=\"hudson.model.View$PropertyList\"/>\n" +
+            "    <jobNames>\n" +
+            "        <comparator class=\"hudson.util.CaseInsensitiveComparator\"/>\n" +
+            "    </jobNames>\n" +
+            "    <jobFilters/>\n" +
+            "    <columns>\n" +
+            "        <hudson.views.StatusColumn/>\n" +
+            "        <hudson.views.WeatherColumn/>\n" +
+            "        <hudson.views.JobColumn/>\n" +
+            "        <hudson.views.LastSuccessColumn/>\n" +
+            "        <hudson.views.LastFailureColumn/>\n" +
+            "        <hudson.views.LastDurationColumn/>\n" +
+            "        <hudson.views.BuildButtonColumn/>\n" +
+            "        <hudson.plugins.favorite.column.FavoriteColumn plugin=\"favorite@2.3.2-SNAPSHOT\"/>\n" +
+            "    </columns>\n" +
+            "    <recurse>false</recurse>\n" +
+            "</hudson.model.ListView>";
 }
