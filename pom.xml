@@ -5,18 +5,19 @@
     <parent>
         <groupId>com.surenpi.autotest</groupId>
         <artifactId>autotest.parent</artifactId>
-        <version>1.0.1-20170815-SNAPSHOT</version>
+        <version>1.0.1-20170618</version>
     </parent>
 
-    <groupId>com.surenpi</groupId>
+    <groupId>com.surenpi.ci</groupId>
     <artifactId>jenkins.client.java</artifactId>
-    <version>0.0.1-20171122-SNAPSHOT</version>
+    <version>1.0.0-20171217</version>
 
     <name>JenkinsJavaClient</name>
     <url>https://github.com/suren-jenkins/jenkins-client-java</url>
 
     <properties>
         <testSkip>true</testSkip>
+        <docSkip>true</docSkip>
     </properties>
 
     <build>
@@ -25,6 +26,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF8</encoding>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -171,9 +178,9 @@
     </repositories>
 
     <scm>
-        <connection>scm:git:https://github.com/LinuxSuRen/phoenix.webui.framework.git</connection>
-        <url>scm:git:https://github.com/LinuxSuRen/phoenix.webui.framework</url>
-        <developerConnection>scm:git:https://github.com/LinuxSuRen/phoenix.webui.framework.git</developerConnection>
+        <connection>scm:git:https://github.com/suren-jenkins/jenkins-client-java.git</connection>
+        <url>scm:git:https://github.com/suren-jenkins/jenkins-client-java</url>
+        <developerConnection>scm:git:https://github.com/suren-jenkins/jenkins-client-java.git</developerConnection>
         <tag>${project.version}</tag>
     </scm>
 
@@ -196,7 +203,7 @@
     <description>Java实现的对Jenkins操作</description>
 
     <ciManagement>
-        <url>https://travis-ci.org/LinuxSuRen/phoenix.webui.framework</url>
+        <url>https://travis-ci.org/suren-jenkins/jenkins-client-java</url>
         <system>travis-ci</system>
     </ciManagement>
 
