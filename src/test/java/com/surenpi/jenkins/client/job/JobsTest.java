@@ -80,7 +80,7 @@ public class JobsTest {
     @Test
     public void getBuildDetails() throws IOException
     {
-        BuildDetail buildDetails = jobs.getBuildDetails("common-devops-server", 6);
+        BuildDetail buildDetails = jobs.getBuildDetails("common-devops-server", 14);
         System.out.println(buildDetails);
     }
 

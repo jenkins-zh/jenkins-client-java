@@ -56,7 +56,9 @@ public class Jenkins {
     }
 
     public Workflows getWorkflows() {
-        return null;
+        Workflows workflows = new Workflows();
+        workflows.setClient(this.client);
+        return workflows;
     }
 
     public Computers getComputers() {
