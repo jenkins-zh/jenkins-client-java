@@ -10,7 +10,7 @@
 
     <groupId>com.surenpi.ci</groupId>
     <artifactId>jenkins.client.java</artifactId>
-    <version>1.0.0-20171217</version>
+    <version>1.0.0-20171218-SNAPSHOT</version>
 
     <name>JenkinsJavaClient</name>
     <url>https://github.com/suren-jenkins/jenkins-client-java</url>
