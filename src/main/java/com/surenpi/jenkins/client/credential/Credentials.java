@@ -4,10 +4,7 @@ import com.surenpi.jenkins.client.BaseManager;
 import com.surenpi.jenkins.client.BaseModel;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Jenkins Credentials Managers
@@ -21,15 +18,64 @@ public class Credentials extends BaseManager
     private String baseUrl = V2URL;
     private boolean isVersion1 = false;
 
-    public void create(Credential credential) throws IOException {
+    /**
+     * Create a credential<br/>
+     * 创建一个凭据
+     * @see #create(Credential, Boolean)
+     * @param credential
+     * @throws IOException
+     */
+    public void create(Credential credential) throws IOException
+    {
         create(credential, isCrumb());
     }
 
-    public void create(Credential credential, Boolean crumbFlag) throws IOException {
+    /**
+     * Create credential then return with id<br/>
+     * 创建并返回一个带有ID的凭据
+     * @param credential
+     * @return
+     * @throws IOException
+     */
+    public Credential createAndFetch(Credential credential) throws IOException
+    {
+        String uuid = UUID.randomUUID().toString();
+
+        credential.setId(null);
+        credential.setDescription(uuid);
+
+        create(credential, isCrumb());
+
+        Map<String, Credential> credentialsMap = list();
+        Collection<Credential> credentials = credentialsMap.values();
+        for(Credential item : credentials)
+        {
+            if(uuid.equals(item.getDescription()))
+            {
+                return item;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 创建凭据
+     * @param credential
+     * @param crumbFlag
+     * @throws IOException
+     */
+    public void create(Credential credential, Boolean crumbFlag) throws IOException
+    {
         String url = String.format("%s/%s?", this.baseUrl, "createCredentials");
         getClient().postFormJson(url, credential.dataForCreate(), crumbFlag);
     }
 
+    /**
+     * 列出所有的凭据
+     * @return
+     * @throws IOException
+     */
     public Map<String, Credential> list() throws IOException {
         String url = String.format("%s?depth=2", this.baseUrl);
         if (this.isVersion1) {
@@ -79,7 +125,15 @@ public class Credentials extends BaseManager
         return false;
     }
 
-    public void update(String credentialId, Credential credential) throws IOException {
+    /**
+     * 根据ID来更新一个凭据
+     * @see #update(String, Credential, Boolean)
+     * @param credentialId
+     * @param credential
+     * @throws IOException
+     */
+    public void update(String credentialId, Credential credential) throws IOException
+    {
         update(credentialId, credential, isCrumb());
     }
 
@@ -90,13 +144,21 @@ public class Credentials extends BaseManager
      * @param crumbFlag
      * @throws IOException
      */
-    public void update(String credentialId, Credential credential, Boolean crumbFlag) throws IOException {
+    public void update(String credentialId, Credential credential, Boolean crumbFlag) throws IOException
+    {
         credential.setId(credentialId);
         String url = String.format("%s/%s/%s/%s?", this.baseUrl, "credential", credentialId, "updateSubmit");
         getClient().postFormJson(url, credential.dataForUpdate(), crumbFlag);
     }
 
-    public void delete(String credentialId) throws IOException {
+    /**
+     * 根据ID删除一个凭据
+     * @see #delete(String, Boolean)
+     * @param credentialId
+     * @throws IOException
+     */
+    public void delete(String credentialId) throws IOException
+    {
         delete(credentialId, isCrumb());
     }
 
@@ -106,7 +168,8 @@ public class Credentials extends BaseManager
      * @param crumbFlag
      * @throws IOException
      */
-    public void delete(String credentialId, Boolean crumbFlag) throws IOException {
+    public void delete(String credentialId, Boolean crumbFlag) throws IOException
+    {
         String url = String.format("%s/%s/%s/%s?", this.baseUrl, "credential", credentialId, "doDelete");
         getClient().postForm(url, new HashMap<String, String>(), crumbFlag);
     }

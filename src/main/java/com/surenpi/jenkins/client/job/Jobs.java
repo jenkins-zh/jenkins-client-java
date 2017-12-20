@@ -307,7 +307,7 @@ public class Jobs extends BaseManager
     }
 
     /**
-     * Build a job with params<br>
+     * Build a job with params<br/>
      * 构建参数化的任务
      * @param jobName job name
      * @param params param map

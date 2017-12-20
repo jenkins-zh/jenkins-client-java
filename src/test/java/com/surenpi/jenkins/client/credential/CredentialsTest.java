@@ -37,6 +37,9 @@ public class CredentialsTest {
         credential.setDisplayName("for unit test display");
         credential.setFullName("for unit test fullname");
         credentials.create(credential);
+
+        credential = credentials.createAndFetch(credential);
+        System.out.println(credential);
     }
 
     @Test
