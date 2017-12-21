@@ -85,9 +85,16 @@ public class JobsTest {
     }
 
     @Test
+    public void getLastBuildDetails() throws IOException
+    {
+        BuildDetail buildDetails = jobs.getLastBuildDetails("common-devops-server");
+        System.out.println(buildDetails);
+    }
+
+    @Test
     public void getXml() throws IOException
     {
-        String xml = jobs.getXml("free");
+        String xml = jobs.getXml("common");
         System.out.println(xml);
     }
 

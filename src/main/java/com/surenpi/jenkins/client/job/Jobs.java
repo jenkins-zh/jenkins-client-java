@@ -365,6 +365,20 @@ public class Jobs extends BaseManager
         return getClient().get("/job/" + EncodingUtils.encode(jobName) + "/" + number, BuildDetail.class);
     }
 
+    /**
+     * 获取最后一次的构建信息
+     * @param jobName
+     * @return
+     * @throws IOException
+     */
+    public BuildDetail getLastBuildDetails(String jobName) throws IOException
+    {
+        JobDetails jobDetails = getDetails(jobName);
+        int lastBuildNum = jobDetails.getLastBuild().getNumber();
+
+        return getBuildDetails(jobName, lastBuildNum);
+    }
+
     @Override
     protected String[] getDependencyArray()
     {

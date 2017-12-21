@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * @author suren
  */
-public class WorkflowTest
+public class WorkflowsTest
 {
     private static Workflows workflows;
     private final String jobName = "hello";
@@ -47,7 +47,7 @@ public class WorkflowTest
     @Test
     public void last() throws IOException
     {
-        WfWithDetails desc = workflows.last("common-1");
+        WfWithDetails desc = workflows.last("common");
 
         System.out.println(desc);
         System.out.println(desc.isBuilding());
