@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
+/**
+ * 执行节点详细信息
+ * @author suren
+ */
 public class ComputerWithDetails extends Computer {
 
     private String displayName;
@@ -31,6 +35,8 @@ public class ComputerWithDetails extends Computer {
     private String offlineCauseReason;
     private List oneOffExecutors; //TODO: What kind of List?
     private Boolean temporarilyOffline;
+    private List<Label> assignedLabels;
+    private String absoluteRemoteFs;
 
     public ComputerWithDetails()
     {
@@ -145,6 +151,26 @@ public class ComputerWithDetails extends Computer {
 
     public Boolean getTemporarilyOffline() {
         return temporarilyOffline;
+    }
+
+    public List<Label> getAssignedLabels()
+    {
+        return assignedLabels;
+    }
+
+    public void setAssignedLabels(List<Label> assignedLabels)
+    {
+        this.assignedLabels = assignedLabels;
+    }
+
+    public String getAbsoluteRemoteFs()
+    {
+        return absoluteRemoteFs;
+    }
+
+    public void setAbsoluteRemoteFs(String absoluteRemoteFs)
+    {
+        this.absoluteRemoteFs = absoluteRemoteFs;
     }
 
     @Override
