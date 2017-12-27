@@ -4,6 +4,8 @@
 
 Java binding for the Jenkins client.
 
+[sonar](https://sonarcloud.io/dashboard?id=com.surenpi.ci%3Ajenkins.client.java)
+
 # How to use it
 
 Add the following dependency to the pom.xml file of your project:
