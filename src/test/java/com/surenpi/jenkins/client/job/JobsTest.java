@@ -1,5 +1,6 @@
 package com.surenpi.jenkins.client.job;
 
+import com.surenpi.jenkins.client.ConstantsForTest;
 import com.surenpi.jenkins.client.Jenkins;
 import com.surenpi.jenkins.client.core.JenkinsInfo;
 import com.surenpi.jenkins.client.folder.FolderJob;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +26,19 @@ public class JobsTest {
     public static void init() throws URISyntaxException
     {
         jobs = new Jenkins(
-                new URI("http://localhost:8080/jenkins"), "admin", "admin").getJobs();
+                new URI(ConstantsForTest.JENKINS_URL),
+                ConstantsForTest.JENKINS_USER,
+                ConstantsForTest.JENKINS_TOKEN).getJobs();
+    }
+
+    @Test
+    public void list() throws IOException
+    {
+        List<Job> list = jobs.getAllJobs();
+        for(Job job : list)
+        {
+            System.out.println(job.getName());
+        }
     }
 
     @Test
