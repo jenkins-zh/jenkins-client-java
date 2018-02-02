@@ -26,9 +26,9 @@ public class JobsTest {
     public static void init() throws URISyntaxException
     {
         jobs = new Jenkins(
-                new URI(ConstantsForTest.JENKINS_URL),
-                ConstantsForTest.JENKINS_USER,
-                ConstantsForTest.JENKINS_TOKEN).getJobs();
+                new URI("http://localhost:8080/jenkins"),
+                "admin",
+                "admin").getJobs();
     }
 
     @Test
@@ -56,6 +56,12 @@ public class JobsTest {
     public void build() throws IOException
     {
         jobs.build("common");
+    }
+
+    @Test
+    public void stop() throws IOException
+    {
+        jobs.stop("common", 21);
     }
 
     @Test
@@ -101,14 +107,14 @@ public class JobsTest {
     @Test
     public void getLastBuildDetails() throws IOException
     {
-        BuildDetail buildDetails = jobs.getLastBuildDetails("common-devops-server");
+        BuildDetail buildDetails = jobs.getLastBuildDetails("pipeline-test");
         System.out.println(buildDetails);
     }
 
     @Test
     public void getXml() throws IOException
     {
-        String xml = jobs.getXml("common");
+        String xml = jobs.getXml("pipeline-test");
         System.out.println(xml);
     }
 

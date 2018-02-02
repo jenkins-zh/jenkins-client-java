@@ -36,7 +36,7 @@ public class ComputerWithDetails extends Computer {
     private List oneOffExecutors; //TODO: What kind of List?
     private Boolean temporarilyOffline;
     private List<Label> assignedLabels;
-    private String absoluteRemoteFs;
+    private String absoluteRemotePath;
 
     public ComputerWithDetails()
     {
@@ -163,14 +163,14 @@ public class ComputerWithDetails extends Computer {
         this.assignedLabels = assignedLabels;
     }
 
-    public String getAbsoluteRemoteFs()
+    public String getAbsoluteRemotePath()
     {
-        return absoluteRemoteFs;
+        return absoluteRemotePath;
     }
 
-    public void setAbsoluteRemoteFs(String absoluteRemoteFs)
+    public void setAbsoluteRemotePath(String absoluteRemotePath)
     {
-        this.absoluteRemoteFs = absoluteRemoteFs;
+        this.absoluteRemotePath = absoluteRemotePath;
     }
 
     @Override

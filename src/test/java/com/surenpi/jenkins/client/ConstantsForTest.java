@@ -9,5 +9,5 @@ public interface ConstantsForTest
     String JENKINS_URL = "http://localhost:8080/jenkins";
     String JENKINS_USER = "admin";
     String JENKINS_PASSWD = "admin";
-    String JENKINS_TOKEN = "9d3f9f26b9b086d330daed18e15e8125";
+    String JENKINS_TOKEN = "ec20c19e641d4df01f82734d1e3b28f6";
 }

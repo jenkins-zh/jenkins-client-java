@@ -331,6 +331,17 @@ public class Jobs extends BaseManager
         getClient().post(urlBuf.toString(), isCrumb());
     }
 
+    /**
+     * stop the job by name
+     * @param jobName
+     * @param buildId
+     * @throws IOException
+     */
+    public void stop(String jobName, int buildId) throws IOException
+    {
+        getClient().post("/job/" + EncodingUtils.encode(jobName) + "/" + buildId + "/stop", isCrumb());
+    }
+
     public JenkinsInfo getAll() throws IOException
     {
         return getClient().get("/", JenkinsInfo.class);

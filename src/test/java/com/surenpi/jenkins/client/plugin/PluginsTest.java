@@ -1,5 +1,6 @@
 package com.surenpi.jenkins.client.plugin;
 
+import com.surenpi.jenkins.client.ConstantsForTest;
 import com.surenpi.jenkins.client.Jenkins;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -21,7 +22,9 @@ public class PluginsTest
     public static void init() throws URISyntaxException
     {
         plugins = new Jenkins(
-                new URI("http://localhost:8080/jenkins"), "admin", "admin").getPlugins();
+                new URI(ConstantsForTest.JENKINS_URL),
+                ConstantsForTest.JENKINS_USER,
+                ConstantsForTest.JENKINS_TOKEN).getPlugins();
     }
 
     @Test
@@ -35,7 +38,7 @@ public class PluginsTest
 
         for(Plugin plugin : mgr.getPlugins())
         {
-            System.out.println(plugin.getShortName() + "==" + plugin.getUrl());
+            System.out.println(plugin.getShortName() + "==" + plugin.getUrl() + "==" + plugin.getVersion());
         }
     }
 }
