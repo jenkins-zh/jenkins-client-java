@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.surenpi.autotest</groupId>
         <artifactId>autotest.parent</artifactId>
-        <version>1.0.1-20170618</version>
+        <version>1.0.1-20170815</version>
     </parent>
 
     <groupId>com.surenpi.ci</groupId>
@@ -32,6 +32,10 @@
                     <target>1.8</target>
                     <encoding>UTF8</encoding>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
