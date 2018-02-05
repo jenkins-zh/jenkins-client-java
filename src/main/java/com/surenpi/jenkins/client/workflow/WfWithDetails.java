@@ -12,6 +12,9 @@ import com.surenpi.jenkins.client.JenkinsClient;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * @author
+ */
 public class WfWithDetails extends BaseModel
 {
     String id;
@@ -38,6 +41,17 @@ public class WfWithDetails extends BaseModel
     public void setName(String name) {
         this.name = name;
     }
+
+    /**
+     * NOT_EXECUTED,
+     * ABORTED,
+     * SUCCESS,
+     * IN_PROGRESS,
+     * PAUSED_PENDING_INPUT,
+     * FAILED,
+     * UNSTABLE
+     * @return
+     */
     public String getStatus() {
         return status;
     }

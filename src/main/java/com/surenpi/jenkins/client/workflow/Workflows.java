@@ -12,7 +12,7 @@ import org.apache.http.client.HttpResponseException;
 import java.io.IOException;
 
 /**
- * 流水新管理
+ * Pipeline module api.
  * @author suren
  */
 public class Workflows extends BaseManager
@@ -69,6 +69,12 @@ public class Workflows extends BaseManager
         }
     }
 
+    /**
+     * Fetch last running status of Pipeline
+     * @param jobName
+     * @return
+     * @throws IOException
+     */
     public WfWithDetails last(String jobName) throws IOException
     {
         String url = "/job/" + EncodingUtils.encode(jobName) + "/lastBuild/wfapi/describe";
