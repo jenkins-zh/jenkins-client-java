@@ -332,6 +332,17 @@ public class Jobs extends BaseManager
     }
 
     /**
+     * Get log text from a job and buildNum
+     * @param jobName
+     * @param buildNum
+     * @return
+     * @throws IOException
+     */
+    public String getLogText(String jobName, int buildNum) throws IOException {
+        return getClient().get("/job/" + EncodingUtils.encode(jobName) + "/" + buildNum + "/consoleText");
+    }
+
+    /**
      * stop the job by name
      * @param jobName
      * @param buildId

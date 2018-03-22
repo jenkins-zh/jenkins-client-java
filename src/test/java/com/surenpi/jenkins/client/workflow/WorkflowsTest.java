@@ -49,7 +49,7 @@ public class WorkflowsTest
     {
         WfWithDetails desc = workflows.last("common");
 
-        System.out.println(desc);
+        System.out.println(desc.getStages().get(0).getStatus());
         System.out.println(desc.isBuilding());
     }
 }

@@ -8,7 +8,7 @@ import org.apache.http.client.HttpResponseException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -26,9 +26,9 @@ public class JobsTest {
     public static void init() throws URISyntaxException
     {
         jobs = new Jenkins(
-                new URI("http://localhost:8080/jenkins"),
-                "admin",
-                "admin").getJobs();
+                new URI("http://172.16.11.23:8080/jenkins"),
+                "jenkins",
+                "jenkins").getJobs();
     }
 
     @Test
@@ -56,6 +56,12 @@ public class JobsTest {
     public void build() throws IOException
     {
         jobs.build("common");
+    }
+
+    @Test
+    public void getLogText() throws IOException
+    {
+        jobs.getLogText("common", 1);
     }
 
     @Test
