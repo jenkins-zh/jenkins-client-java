@@ -7,6 +7,7 @@ import com.surenpi.jenkins.client.credential.Credentials;
 import com.surenpi.jenkins.client.folder.Folders;
 import com.surenpi.jenkins.client.job.Jobs;
 import com.surenpi.jenkins.client.plugin.Plugins;
+import com.surenpi.jenkins.client.queue.Queues;
 import com.surenpi.jenkins.client.view.Views;
 import com.surenpi.jenkins.client.workflow.Workflows;
 import org.slf4j.Logger;
@@ -72,6 +73,13 @@ public class Jenkins {
         Labels labels = new Labels();
         labels.setClient(this.client);
         return labels;
+    }
+
+    public Queues getQueues()
+    {
+        Queues queues = new Queues();
+        queues.setClient(this.client);
+        return queues;
     }
 
     /**

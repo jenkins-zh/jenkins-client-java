@@ -113,7 +113,7 @@ public class JobsTest {
     @Test
     public void getLastBuildDetails() throws IOException
     {
-        BuildDetail buildDetails = jobs.getLastBuildDetails("pipeline-test");
+        BuildDetail buildDetails = jobs.getLastBuildDetails("common");
         System.out.println(buildDetails);
     }
 

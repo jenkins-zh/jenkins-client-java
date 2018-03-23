@@ -52,4 +52,11 @@ public class WorkflowsTest
         System.out.println(desc.getStages().get(0).getStatus());
         System.out.println(desc.isBuilding());
     }
+
+    @Test
+    public void getWfDescribe() throws IOException
+    {
+        WfWithDetails desc = workflows.getWfDescribe("common", 233);
+        System.out.println(desc);
+    }
 }
