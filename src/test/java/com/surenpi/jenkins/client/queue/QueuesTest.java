@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * @author suren
@@ -26,9 +27,28 @@ public class QueuesTest
     }
 
     @Test
-    public void getQueue() throws IOException
+    public void getItems() throws IOException
     {
-        Queue queue = queues.getQueue();
+        Queue queue = queues.getItems();
         System.out.println(queue);
+    }
+
+    @Test
+    public void cancelItem() throws IOException
+    {
+        Queue queue = queues.getItems();
+        if(queue != null)
+        {
+            List<QueueItem> items = queue.getItems();
+            if(items == null)
+            {
+                return;
+            }
+
+            for(QueueItem item : items)
+            {
+                queues.cancelItem(item.getId());
+            }
+        }
     }
 }

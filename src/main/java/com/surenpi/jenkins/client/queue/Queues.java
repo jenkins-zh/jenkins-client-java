@@ -15,8 +15,18 @@ public class Queues extends BaseManager
         return null;
     }
 
-    public Queue getQueue() throws IOException
+    /**
+     * Get the queue items.
+     * @return
+     * @throws IOException
+     */
+    public Queue getItems() throws IOException
     {
         return getClient().get("/queue/api/json", Queue.class);
+    }
+
+    public void cancelItem(int id) throws IOException
+    {
+        getClient().post("/queue/cancelItem?id=" + id, this.isCrumb());
     }
 }
