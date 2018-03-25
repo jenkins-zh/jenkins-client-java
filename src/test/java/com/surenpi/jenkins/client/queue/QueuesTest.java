@@ -2,6 +2,7 @@ package com.surenpi.jenkins.client.queue;
 
 import com.surenpi.jenkins.client.ConstantsForTest;
 import com.surenpi.jenkins.client.Jenkins;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -30,7 +31,25 @@ public class QueuesTest
     public void getItems() throws IOException
     {
         Queue queue = queues.getItems();
-        System.out.println(queue);
+        Assert.assertNotNull(queue.getItems());
+        for(QueueItem item : queues.getItems().getItems())
+        {
+            System.out.println(item.getId());
+        }
+    }
+
+    @Test
+    public void getItem() throws IOException
+    {
+        Queue queue = queues.getItems();
+        Assert.assertNotNull(queue.getItems());
+        for(QueueItem item : queues.getItems().getItems())
+        {
+            int id = item.getId();
+
+            QueueItemDetail detail = queues.getItem(id);
+            Assert.assertNotNull(detail);
+        }
     }
 
     @Test

@@ -1,9 +1,11 @@
 package com.surenpi.jenkins.client.queue;
 
+import com.surenpi.jenkins.client.BaseModel;
+
 /**
  * @author suren
  */
-public class QueueItem
+public class QueueItem extends BaseModel
 {
     private int id;
     private boolean blocked;
