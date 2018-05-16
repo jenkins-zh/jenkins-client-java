@@ -111,3 +111,9 @@ public class Demo
     }
 }
 ```
+
+# Compile & Package
+
+If you want to compile project, you can via `mvn clean compile`
+
+If you want to package project and skip the junit test, you can via `mvn clean package -DskipTest`
