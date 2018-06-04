@@ -306,6 +306,12 @@ public class Jobs extends BaseManager
         getClient().post("/job/" + EncodingUtils.encode(jobName) + "/build", isCrumb());
     }
 
+    public void build(String folder, String jobName, String branch) throws IOException {
+        getClient().post("/job/" + EncodingUtils.encode(folder)
+                + "/job/" + EncodingUtils.encode(jobName)
+                + "/job/" + EncodingUtils.encode(branch) + "/build", isCrumb());
+    }
+
     /**
      * Build a job with params<br/>
      * 构建参数化的任务
