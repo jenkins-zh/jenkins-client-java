@@ -1,14 +1,17 @@
 package com.surenpi.jenkins.client.job;
 
-import com.surenpi.jenkins.client.ConstantsForTest;
 import com.surenpi.jenkins.client.Jenkins;
 import com.surenpi.jenkins.client.core.JenkinsInfo;
 import com.surenpi.jenkins.client.folder.FolderJob;
+import hudson.model.FreeStyleProject;
 import org.apache.http.client.HttpResponseException;
+import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -21,14 +24,25 @@ import java.util.Map;
 public class JobsTest {
     private static Jobs jobs;
     private final String jobName = "hello";
+    @Rule
+    public JenkinsRule rule = new JenkinsRule();
 
-    @BeforeClass
-    public static void init() throws URISyntaxException
-    {
-        jobs = new Jenkins(
-                new URI("http://172.16.11.23:8080/jenkins"),
-                "jenkins",
-                "jenkins").getJobs();
+//    @BeforeClass
+//    public static void init() throws URISyntaxException
+//    {
+//
+//        jobs = new Jenkins(
+//                new URI("http://172.16.11.23:8080/jenkins"),
+//                "jenkins",
+//                "jenkins").getJobs();
+//    }
+
+    @Before
+    public void setup() throws Exception {
+        FreeStyleProject project = rule.createFreeStyleProject();
+
+        System.out.println(rule.getURL());
+//        rule.buildAndAssertSuccess(project);
     }
 
     @Test
