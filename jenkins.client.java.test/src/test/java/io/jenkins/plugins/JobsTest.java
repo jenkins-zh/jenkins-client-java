@@ -7,24 +7,28 @@ import com.surenpi.jenkins.client.job.BuildDetail;
 import com.surenpi.jenkins.client.job.Job;
 import com.surenpi.jenkins.client.job.JobDetails;
 import com.surenpi.jenkins.client.job.Jobs;
-import hudson.model.FreeStyleProject;
-import hudson.model.User;
+import hudson.matrix.MatrixProject;
+import hudson.model.*;
 import hudson.security.SecurityRealm;
+import hudson.tasks.Shell;
 import jenkins.security.ApiTokenProperty;
 import org.apache.http.client.HttpResponseException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.recipes.WithPlugin;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.*;
 
 /**
  * @author suren
@@ -34,16 +38,6 @@ public class JobsTest {
     private final String jobName = "hello";
     @Rule
     public JenkinsRule j = new JenkinsRule();
-
-//    @BeforeClass
-//    public static void init() throws URISyntaxException
-//    {
-//
-//        jobs = new Jenkins(
-//                new URI("http://localhost:8080/"),
-//                "admin",
-//                "11d732ac24c507d79abad6405b27a10f3a").getJobs();
-//    }
 
     @Before
     public void setup() throws Exception {
@@ -60,8 +54,7 @@ public class JobsTest {
     }
 
     @Test
-    public void list() throws IOException
-    {
+    public void list() throws IOException {
         List<Job> list = jobs.getAllJobs();
         assertNotNull(list);
         assertEquals(0, list.size());
@@ -72,19 +65,18 @@ public class JobsTest {
     }
 
     @Test
-    public void create() throws IOException
-    {
+//    @WithPlugin("cloudbees-folder")
+    public void create() throws IOException {
         jobs.create(jobName, JOB_XML);
-
         assertNotNull(j.jenkins.getItem(jobName));
 
-//        jobs.create(new FolderJob("folder"), jobName + "-" + System.currentTimeMillis(), JOB_XML);
-//
-//        jobs.create(new FolderJob("folder-" + System.currentTimeMillis()),
-//                jobName + "-" + System.currentTimeMillis(), JOB_XML, true, true);
+//        final String folder = "folder";
+//        jobs.create(new FolderJob(folder), jobName, JOB_XML, true, true);
+//        assertNotNull(j.jenkins.getItem(folder));
     }
 
     @Test
+    @Ignore
     public void build() throws Exception
     {
         FreeStyleProject project = j.createFreeStyleProject();
@@ -95,23 +87,49 @@ public class JobsTest {
     }
 
     @Test
-    public void getLogText() throws IOException
-    {
-        jobs.getLogText("common", 1);
-//        http://localhost:8080/job/pipeline/11/logText/progressiveText?start
+    public void getLogText() throws IOException, ExecutionException, InterruptedException {
+        FreeStyleProject project = j.createFreeStyleProject();
+        FreeStyleBuild build = project.scheduleBuild2(0).waitForStart();
+        j.waitForCompletion(build);
+
+        String log = jobs.getLogText(project.getName(), 1);
+        assertNotNull(log);
+        assertThat(log, containsString("Finished:"));
+
+        project.getBuildersList().add(new Shell("echo hello"));
+        build = project.scheduleBuild2(0).waitForStart();
+        j.waitForCompletion(build);
+        log = jobs.getLogText(project.getName(), 2);
+        assertThat(log, containsString("hello"));
     }
 
     @Test
-    public void stop() throws IOException
-    {
-        jobs.stop("common", 21);
+    public void stop() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject();
+
+        project.getBuildersList().add(new Shell("sleep 160"));
+        project.scheduleBuild2(0).waitForStart();
+
+        assertTrue(project.isBuilding());
+        jobs.stop(project.getName(), 1);
+        j.waitUntilNoActivityUpTo(6000);
+        assertFalse(project.isBuilding());
     }
 
     @Test
-    public void buildWithParams() throws IOException
-    {
-        Map<String, String> params = Collections.singletonMap("a", "a");
-        jobs.buildWithParams("free", params);
+    public void buildWithParams() throws Exception {
+        MatrixProject project = j.createProject(MatrixProject.class);
+
+        final String name = "NAME";
+        project.addProperty(new ParametersDefinitionProperty(new StringParameterDefinition(name, "")));
+
+        project.getBuildersList().add(new Shell("echo env." + name));
+
+        final Map<String, String> params = Collections.singletonMap(name, System.currentTimeMillis() + "-hello");
+        jobs.buildWithParams(project.getName(), params);
+        j.waitUntilNoActivity();
+        assertEquals(1, project.getBuilds().size());
+        assertThat(project.getBuild("1").getLog(), containsString(params.get(name)));
     }
 
     @Test
