@@ -23,7 +23,7 @@ import java.util.Map;
 public class WorkflowsTest
 {
     private static Workflows workflows;
-    private final String jobName = "hello";
+    private final String jobName = "pipeline";
 
     @BeforeClass
     public static void init() throws URISyntaxException
@@ -56,7 +56,12 @@ public class WorkflowsTest
     @Test
     public void getWfDescribe() throws IOException
     {
-        WfWithDetails desc = workflows.getWfDescribe("common", 233);
+        WfWithDetails desc = workflows.getWfDescribe(jobName, 6);
         System.out.println(desc);
+    }
+
+    @Test
+    public void restart() throws IOException {
+        workflows.restart(jobName, 6, "stage1");
     }
 }

@@ -10,6 +10,8 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Pipeline module api.
@@ -82,6 +84,19 @@ public class Workflows extends BaseManager
         setBuildingInfo(details, jobName);
 
         return details;
+    }
+
+    public void restart(String jobName, int buildNum, String stage) throws IOException {
+        String url = "/job/" + EncodingUtils.encode(jobName) + "/" + buildNum + "/restart/restart/";
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("stageName", stage);
+
+        //curl 'http://localhost:8080/job/pipeline/8/restart/restart' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Origin: http://localhost:8080' -H 'Upgrade-Insecure-Requests: 1' -H 'Content-Type: application/x-www-form-urlencoded' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Referer: http://localhost:8080/job/pipeline/8/restart/' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7' -H 'Cookie: lang=zh-CN; JSESSIONID.503dec74=node0ebhr3ydc10a44mv7kzvfqk8t0.node0; JSESSIONID.26fd2d46=node01vrh1uwkj471x19i4g7x3u52zs7.node0; JSESSIONID.38ec8cc2=node0nmj38aq6ofbg7c66w35jl9781.node0; JSESSIONID.5e1a90bd=node0gpra5jlmwpzqqhyuunybuap80.node0; JSESSIONID=7436EF5B468E2F6FC952AC92D46423AC; screenResolution=1280x800; hudson_auto_refresh=false'
+        //
+        //
+        // --data 'stageName=stage1&Jenkins-Crumb=6c401fbc321622b1f79d4ef8fbd6fdbf&json=%7B%22stageName%22%3A+%22stage1%22%2C+%22Jenkins-Crumb%22%3A+%226c401fbc321622b1f79d4ef8fbd6fdbf%22%7D&Submit=Run' --compressed
+        getClient().postFormJson(url, data, this.isCrumb());
     }
 
     private void setBuildingInfo(WfWithDetails details, String jobName) throws IOException

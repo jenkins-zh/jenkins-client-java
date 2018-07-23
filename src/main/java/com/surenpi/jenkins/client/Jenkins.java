@@ -1,5 +1,6 @@
 package com.surenpi.jenkins.client;
 
+import com.surenpi.jenkins.client.blue.BlueOcean;
 import com.surenpi.jenkins.client.computer.Computers;
 import com.surenpi.jenkins.client.computer.Labels;
 import com.surenpi.jenkins.client.core.OverLoad;
@@ -80,6 +81,13 @@ public class Jenkins {
         Queues queues = new Queues();
         queues.setClient(this.client);
         return queues;
+    }
+
+    public BlueOcean getBlueOcean() {
+        BlueOcean blueOcean = new BlueOcean();
+        blueOcean.setClient(this.client);
+
+        return blueOcean;
     }
 
     /**

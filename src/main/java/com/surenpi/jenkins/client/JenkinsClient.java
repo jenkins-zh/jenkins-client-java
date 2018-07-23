@@ -15,34 +15,36 @@ import java.util.Map;
  * @author suren
  */
 public interface JenkinsClient {
-    public <T extends BaseModel> T get(String path, Class<T> cls) throws IOException;
+    <T extends BaseModel> T get(String path, Class<T> cls) throws IOException;
 
-    public String get(String path) throws IOException;
+    <T extends BaseModel> List<T> getList(String path, Class<T> itemCls) throws IOException;
 
-    public <T extends BaseModel> T getQuietly(String path, Class<T> cls);
+    String get(String path) throws IOException;
 
-    public InputStream getFile(URI path) throws IOException;
+    <T extends BaseModel> T getQuietly(String path, Class<T> cls);
 
-    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException;
+    InputStream getFile(URI path) throws IOException;
 
-    public <R extends BaseModel, D> R post(String path, D data, Class<R> cls, boolean crumbFlag) throws IOException;
+    <R extends BaseModel, D> R post(String path, D data, Class<R> cls) throws IOException;
 
-    public void postForm(String path, Map<String, String> data, boolean crumbFlag) throws IOException;
+    <R extends BaseModel, D> R post(String path, D data, Class<R> cls, boolean crumbFlag) throws IOException;
 
-    public HttpResponse postFormWithResult(String path, List<NameValuePair> data, boolean crumbFlag) throws IOException;
+    void postForm(String path, Map<String, String> data, boolean crumbFlag) throws IOException;
 
-    public String postXml(String path, String xml_data) throws IOException;
+    HttpResponse postFormWithResult(String path, List<NameValuePair> data, boolean crumbFlag) throws IOException;
 
-    public String postXml(String path, String xml_data, boolean crumbFlag) throws IOException;
+    String postXml(String path, String xml_data) throws IOException;
 
-    public String postText(String path, String textData, boolean crumbFlag) throws IOException;
+    String postXml(String path, String xml_data, boolean crumbFlag) throws IOException;
 
-    public String postText(String path, String textData, ContentType contentType, boolean crumbFlag)
+    String postText(String path, String textData, boolean crumbFlag) throws IOException;
+
+    String postText(String path, String textData, ContentType contentType, boolean crumbFlag)
             throws IOException;
 
-    public void post(String path) throws IOException;
+    void post(String path) throws IOException;
 
-    public void post(String path, boolean crumbFlag) throws IOException;
+    void post(String path, boolean crumbFlag) throws IOException;
 
-    public void postFormJson(String path, Map<String, Object> data, boolean crumbFlag) throws IOException;
+    void postFormJson(String path, Map<String, Object> data, boolean crumbFlag) throws IOException;
 }

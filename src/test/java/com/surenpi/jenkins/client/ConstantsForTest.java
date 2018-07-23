@@ -6,8 +6,8 @@ package com.surenpi.jenkins.client;
  */
 public interface ConstantsForTest
 {
-    String JENKINS_URL = "http://localhost:8080/jenkins";
+    String JENKINS_URL = "http://localhost:8080/";
     String JENKINS_USER = "admin";
     String JENKINS_PASSWD = "admin";
-    String JENKINS_TOKEN = "ec20c19e641d4df01f82734d1e3b28f6";
+    String JENKINS_TOKEN = "1176e4f540409d845eb887c0a73be59a04";
 }

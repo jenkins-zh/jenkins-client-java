@@ -6,6 +6,9 @@
 
 package com.surenpi.jenkins.client;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.io.ByteStreams;
@@ -154,6 +157,12 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
             EntityUtils.consume(response.getEntity());
             releaseConnection(getMethod);
         }
+    }
+
+    @Override
+    public <T extends BaseModel> List<T> getList(String path, Class<T> itemCls) throws IOException {
+        String response = get(path);
+        return mapper.readValue(response, new TypeReference<List<T>>(){});
     }
 
     /**
@@ -501,7 +510,7 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
             request = new HttpPost(noapi(path));
         }
 
-        if (crumbFlag == true) {
+        if (crumbFlag) {
             Crumb crumb = getQuietly("/crumbIssuer", Crumb.class);
             if (crumb != null) {
                 request.addHeader(new BasicHeader(crumb.getCrumbRequestField(), crumb.getCrumb()));
@@ -549,6 +558,13 @@ public class JenkinsHttpClient implements JenkinsClient, Closeable {
     private ObjectMapper getDefaultMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+//        mapper.configure(JsonParser.Feature.INTERN_FIELD_NAMES, true);
+//        mapper.configure(JsonParser.Feature.CANONICALIZE_FIELD_NAMES, true);
+//        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return mapper;
     }
 

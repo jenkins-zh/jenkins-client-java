@@ -6,6 +6,7 @@
 
 package com.surenpi.jenkins.client.util;
 
+import com.surenpi.jenkins.client.blue.BlueOcean;
 import com.surenpi.jenkins.client.folder.FolderJob;
 
 import java.net.URI;
@@ -129,7 +130,11 @@ public final class UrlUtils {
     public static URI toJsonApiUri(final URI uri, final String context, final String path) {
         String p = path;
         if (!p.matches("(?i)https?://.*")) p = join(context, p);
- 
+
+        if(p.startsWith(BlueOcean.baseUrl)) {
+            return uri.resolve("/").resolve(p.replace(" ", "%20"));
+        }
+
         if (!p.contains("?")) {
             p = join(p, "api/json");
         } else {
