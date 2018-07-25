@@ -1,21 +1,19 @@
 package com.surenpi.jenkins.client.workflow;
 
-import com.surenpi.jenkins.client.ConstantsForTest;
 import com.surenpi.jenkins.client.Jenkins;
-import com.surenpi.jenkins.client.core.JenkinsInfo;
-import com.surenpi.jenkins.client.folder.FolderJob;
-import com.surenpi.jenkins.client.job.BuildDetail;
-import com.surenpi.jenkins.client.job.JobDetails;
-import com.surenpi.jenkins.client.job.Jobs;
-import org.apache.http.client.HttpResponseException;
-import org.junit.BeforeClass;
+import hudson.model.User;
+import hudson.security.SecurityRealm;
+import jenkins.security.ApiTokenProperty;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.Map;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author suren
@@ -24,14 +22,22 @@ public class WorkflowsTest
 {
     private static Workflows workflows;
     private final String jobName = "pipeline";
+    @Rule
+    public JenkinsRule j = new JenkinsRule();
 
-    @BeforeClass
-    public static void init() throws URISyntaxException
+    @Before
+    public void init() throws URISyntaxException
     {
-        workflows = new Jenkins(
-                new URI(ConstantsForTest.JENKINS_URL),
-                ConstantsForTest.JENKINS_USER,
-                ConstantsForTest.JENKINS_PASSWD).getWorkflows();
+        User user = User.getById("admin", true);
+
+        assertNotNull(user);
+
+        String token = ((ApiTokenProperty) user.getProperty(ApiTokenProperty.class)).getApiToken();
+
+        assertNotNull(j.jenkins.getRootUrl());
+
+        j.jenkins.setSecurityRealm(SecurityRealm.NO_AUTHENTICATION);
+        workflows = new Jenkins(new URI(j.jenkins.getRootUrl()), user.getId(), token).getWorkflows();
     }
 
     @Test

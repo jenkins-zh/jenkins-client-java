@@ -1,9 +1,14 @@
 package com.surenpi.jenkins.client.computer;
 
-import com.surenpi.jenkins.client.ConstantsForTest;
 import com.surenpi.jenkins.client.Jenkins;
+import hudson.model.User;
+import hudson.security.SecurityRealm;
+import jenkins.security.ApiTokenProperty;
+import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
 import java.io.IOException;
 import java.net.URI;
@@ -11,21 +16,30 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
  * @author suren
  */
 public class ComputersTest
 {
-
     private static Computers computers;
+    @Rule
+    public JenkinsRule j = new JenkinsRule();
 
-    @BeforeClass
-    public static void init() throws URISyntaxException
+    @Before
+    public void init() throws URISyntaxException
     {
-        computers = new Jenkins(
-                new URI(ConstantsForTest.JENKINS_URL),
-                ConstantsForTest.JENKINS_USER,
-                ConstantsForTest.JENKINS_PASSWD).getComputers();
+        User user = User.getById("admin", true);
+
+        assertNotNull(user);
+
+        String token = ((ApiTokenProperty) user.getProperty(ApiTokenProperty.class)).getApiToken();
+
+        assertNotNull(j.jenkins.getRootUrl());
+
+        j.jenkins.setSecurityRealm(SecurityRealm.NO_AUTHENTICATION);
+        computers = new Jenkins(new URI(j.jenkins.getRootUrl()), user.getId(), token).getComputers();
     }
 
     @Test

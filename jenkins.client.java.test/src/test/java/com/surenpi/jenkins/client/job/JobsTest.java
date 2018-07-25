@@ -1,4 +1,4 @@
-package io.jenkins.plugins;
+package com.surenpi.jenkins.client.job;
 
 import com.surenpi.jenkins.client.Jenkins;
 import com.surenpi.jenkins.client.core.JenkinsInfo;

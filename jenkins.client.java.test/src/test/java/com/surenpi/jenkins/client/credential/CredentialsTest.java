@@ -1,13 +1,21 @@
 package com.surenpi.jenkins.client.credential;
 
 import com.surenpi.jenkins.client.Jenkins;
-import org.junit.BeforeClass;
+import hudson.model.User;
+import hudson.security.SecurityRealm;
+import jenkins.security.ApiTokenProperty;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author suren
@@ -16,18 +24,29 @@ public class CredentialsTest {
     private static Credentials credentials;
     private final String userName = "hello";
 
-    @BeforeClass
-    public static void init() throws URISyntaxException {
-        credentials = new Jenkins(
-                new URI("http://localhost:8080/jenkins"),
-                "admin", "admin").getCredentials();
+    @Rule
+    public JenkinsRule j = new JenkinsRule();
+
+    @Before
+    public void init() throws URISyntaxException {
+        User user = User.getById("admin", true);
+
+        assertNotNull(user);
+
+        String token = ((ApiTokenProperty) user.getProperty(ApiTokenProperty.class)).getApiToken();
+
+        assertNotNull(j.jenkins.getRootUrl());
+
+        j.jenkins.setSecurityRealm(SecurityRealm.NO_AUTHENTICATION);
+        credentials = new Jenkins(new URI(j.jenkins.getRootUrl()), user.getId(), token).getCredentials();
     }
 
     @Test
     public void list() throws IOException, URISyntaxException {
-        Map<String, Credential> list = credentials.list();
+        Map<String, Credential> map = credentials.list();
 
-        System.out.println(list);
+        assertNotNull(map);
+        assertEquals(0, map.size());
     }
 
     @Test

@@ -7,6 +7,7 @@ import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.recipes.Recipe;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -43,8 +44,33 @@ public @interface WithPlugins {
         @Override
         public void decorateHome(HudsonTestCase testCase, File home) throws Exception {
             for (String plugin : a.value()) {
-                URL res = getClass().getClassLoader().getResource("plugins/" + plugin);
-                FileUtils.copyURLToFile(res, new File(home, "plugins/" + plugin));
+                String[] pom = plugin.split(":");
+                if(pom.length >= 2) {
+                    loadFromMaven(pom, home);
+                } else {
+                    URL res = getClass().getClassLoader().getResource("plugins/" + plugin);
+                    FileUtils.copyURLToFile(res, new File(home, "plugins/" + plugin));
+                }
+            }
+        }
+
+        private void loadFromMaven(String[] pom, File home) {
+            final String groupId = pom[0];
+            final String artifactId = pom[1];
+            final String version = pom[2];
+
+            final String plugin = artifactId + "-" + version + ".hpi";
+
+            String mvnHome = System.getenv("HOME");
+            File pluginFile = new File(mvnHome, ".m2/repository/"
+                    + groupId + "/" + artifactId + "/" + version
+                    + "/" + plugin);
+            if(pluginFile.isFile()) {
+                try {
+                    FileUtils.copyURLToFile(pluginFile.toURL(), new File(home, "plugins/" + plugin));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -61,8 +87,33 @@ public @interface WithPlugins {
         @Override
         public void decorateHome(JenkinsRule jenkinsRule, File home) throws Exception {
             for (String plugin : a.value()) {
-                URL res = getClass().getClassLoader().getResource("plugins/" + plugin);
-                FileUtils.copyURLToFile(res, new File(home, "plugins/" + plugin));
+                String[] pom = plugin.split(":");
+                if(pom.length >= 2) {
+                    loadFromMaven(pom, home);
+                } else {
+                    URL res = getClass().getClassLoader().getResource("plugins/" + plugin);
+                    FileUtils.copyURLToFile(res, new File(home, "plugins/" + plugin));
+                }
+            }
+        }
+
+        private void loadFromMaven(String[] pom, File home) {
+            final String groupId = pom[0];
+            final String artifactId = pom[1];
+            final String version = pom[2];
+
+            final String plugin = artifactId + "-" + version + ".hpi";
+
+            String mvnHome = System.getenv("HOME");
+            File pluginFile = new File(mvnHome, ".m2/repository/"
+                    + groupId + "/" + artifactId + "/" + version
+                    + "/" + plugin);
+            if(pluginFile.isFile()) {
+                try {
+                    FileUtils.copyURLToFile(pluginFile.toURL(), new File(home, "plugins/" + plugin));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

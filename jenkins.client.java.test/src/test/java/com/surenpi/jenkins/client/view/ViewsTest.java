@@ -1,13 +1,19 @@
 package com.surenpi.jenkins.client.view;
 
-import com.surenpi.jenkins.client.ConstantsForTest;
 import com.surenpi.jenkins.client.Jenkins;
-import org.junit.BeforeClass;
+import hudson.model.User;
+import hudson.security.SecurityRealm;
+import jenkins.security.ApiTokenProperty;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author suren
@@ -16,33 +22,48 @@ public class ViewsTest {
     private static Views views;
     private final String viewName = "hello";
 
-    @BeforeClass
-    public static void init() throws URISyntaxException
+    @Rule
+    public JenkinsRule j = new JenkinsRule();
+
+    @Before
+    public void setup() throws URISyntaxException
     {
-        views = new Jenkins(
-                new URI(ConstantsForTest.JENKINS_URL),
-                ConstantsForTest.JENKINS_USER,
-                ConstantsForTest.JENKINS_PASSWD).getViews();
+        User user = User.getById("admin", true);
+
+        assertNotNull(user);
+
+        String token = ((ApiTokenProperty) user.getProperty(ApiTokenProperty.class)).getApiToken();
+
+        assertNotNull(j.jenkins.getRootUrl());
+
+        j.jenkins.setSecurityRealm(SecurityRealm.NO_AUTHENTICATION);
+        views = new Jenkins(new URI(j.jenkins.getRootUrl()), user.getId(), token).getViews();
     }
 
     @Test
     public void create() throws IOException
     {
         views.create(viewName, VIEW_XML);
+
+        hudson.model.View view = j.jenkins.getView(viewName);
+        assertNotNull(view);
     }
 
     @Test
     public void info() throws IOException
     {
+        views.create(viewName, VIEW_XML);
         View view = views.info(viewName);
-        System.out.println(view);
+        assertNotNull(view);
     }
 
     @Test
     public void getXml() throws IOException
     {
+        views.create(viewName, VIEW_XML);
+        assertNotNull(j.jenkins.getView(viewName));
         String viewXmlConfig = views.getXml(viewName);
-        System.out.println(viewXmlConfig);
+        assertNotNull(viewXmlConfig);
     }
 
     public static final String VIEW_XML = "<hudson.model.ListView>\n" +
