@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.WithoutJenkins;
 
 import java.io.IOException;
 import java.net.URI;
@@ -22,7 +23,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class CredentialsTest {
     private static Credentials credentials;
-    private final String userName = "hello";
 
     @Rule
     public JenkinsRule j = new JenkinsRule();
@@ -42,7 +42,7 @@ public class CredentialsTest {
     }
 
     @Test
-    public void list() throws IOException, URISyntaxException {
+    public void list() throws IOException {
         Map<String, Credential> map = credentials.list();
 
         assertNotNull(map);
@@ -51,14 +51,14 @@ public class CredentialsTest {
 
     @Test
     public void create() throws IOException {
-        Credential credential = new UserPasswdCredential(userName, "hello");
+        Credential credential = new UserPasswdCredential("", "");
         credential.setDescription("for unit test");
         credential.setDisplayName("for unit test display");
         credential.setFullName("for unit test fullname");
         credentials.create(credential);
 
         credential = credentials.createAndFetch(credential);
-        System.out.println(credential);
+        assertNotNull(credential);
     }
 
     @Test
@@ -68,7 +68,7 @@ public class CredentialsTest {
             Credential credential = list.get(id);
 
             if(credential instanceof UserPasswdCredential &&
-                    ((UserPasswdCredential) credential).getUsername().equals(userName)) {
+                    ((UserPasswdCredential) credential).getUsername().equals("")) {
                 credentials.delete(id);
             }
         }

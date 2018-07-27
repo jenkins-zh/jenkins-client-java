@@ -14,6 +14,7 @@ import com.surenpi.jenkins.client.workflow.Workflows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URI;
 
 /**
@@ -95,7 +96,14 @@ public class Jenkins {
      * @return
      */
     public Credentials getCredentials() {
-        Credentials credentials = new Credentials();
+        String version = getVersion();
+        Credentials credentials;
+        if("2.7.3".equals(version)) {
+            credentials = new Credentials(Credentials.V1URL);
+        } else {
+            credentials = new Credentials();
+        }
+
         credentials.setClient(this.client);
 
         return credentials;
@@ -120,6 +128,12 @@ public class Jenkins {
     }
 
     public String getVersion() {
-        return "";
+        try {
+            this.client.postFormJson("/", null, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return this.client.getJenkinsVersion();
     }
 }

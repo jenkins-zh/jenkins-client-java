@@ -2,13 +2,9 @@ package com.surenpi.jenkins.client.job;
 
 import com.surenpi.jenkins.client.Jenkins;
 import com.surenpi.jenkins.client.core.JenkinsInfo;
-import com.surenpi.jenkins.client.folder.FolderJob;
-import com.surenpi.jenkins.client.job.BuildDetail;
-import com.surenpi.jenkins.client.job.Job;
-import com.surenpi.jenkins.client.job.JobDetails;
-import com.surenpi.jenkins.client.job.Jobs;
 import hudson.matrix.MatrixProject;
 import hudson.model.*;
+import hudson.model.queue.QueueTaskFuture;
 import hudson.security.SecurityRealm;
 import hudson.tasks.Shell;
 import jenkins.security.ApiTokenProperty;
@@ -18,7 +14,6 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
-import org.jvnet.hudson.test.recipes.WithPlugin;
 
 import java.io.IOException;
 import java.net.URI;
@@ -142,41 +137,56 @@ public class JobsTest {
     public void jenkinsInfo() throws IOException
     {
         JenkinsInfo info = jobs.getAll();
-        System.out.println(info);
+        assertNotNull(info);
     }
 
     @Test
     public void getDetails() throws IOException
     {
-        JobDetails details = jobs.getDetails("common-devops-server");
-        System.out.println(details);
-    }
+        FreeStyleProject project = j.createFreeStyleProject();
+        JobDetails details = jobs.getDetails(project.getName());
+        assertNotNull(details);
 
-    @Test(expected = HttpResponseException.class)
-    public void getNotExistsJob() throws IOException
-    {
-        jobs.getDetails(String.valueOf(System.currentTimeMillis()));
-    }
-
-    @Test
-    public void getBuildDetails() throws IOException
-    {
-        BuildDetail buildDetails = jobs.getBuildDetails("common-devops-server", 14);
-        System.out.println(buildDetails);
+        try {
+            jobs.getDetails(String.valueOf(System.currentTimeMillis()));
+        } catch (Exception e) {
+            assertEquals(HttpResponseException.class, e.getClass());
+        }
     }
 
     @Test
-    public void getLastBuildDetails() throws IOException
+    public void getBuildDetails() throws Exception
     {
-        BuildDetail buildDetails = jobs.getLastBuildDetails("common");
-        System.out.println(buildDetails);
+
+        FreeStyleProject project = j.createFreeStyleProject();
+        QueueTaskFuture<FreeStyleBuild> build = project.scheduleBuild2(0);
+        assertNotNull(build);
+        build.waitForStart();
+        j.waitForCompletion(build.get());
+
+        BuildDetail buildDetails = jobs.getBuildDetails(project.getName(), 1);
+        assertNotNull(buildDetails);
+    }
+
+    @Test
+    public void getLastBuildDetails() throws IOException, ExecutionException, InterruptedException {
+        FreeStyleProject project = j.createFreeStyleProject();
+        QueueTaskFuture<FreeStyleBuild> build = project.scheduleBuild2(0);
+        assertNotNull(build);
+        build.waitForStart();
+        j.waitForCompletion(build.get());
+
+        BuildDetail buildDetails = jobs.getLastBuildDetails(project.getName());
+        assertNotNull(buildDetails);
     }
 
     @Test
     public void getXml() throws IOException
     {
-        String xml = jobs.getXml("pipeline-test");
-        System.out.println(xml);
+        FreeStyleProject project = j.createFreeStyleProject();
+
+        String xml = jobs.getXml(project.getName());
+        assertNotNull(xml);
     }
 
     public static final String JOB_XML = "<?xml version='1.0' encoding='UTF-8'?>\n" +

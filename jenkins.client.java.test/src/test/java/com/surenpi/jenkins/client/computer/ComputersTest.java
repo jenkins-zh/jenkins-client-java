@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -46,16 +47,9 @@ public class ComputersTest
     public void getComputers() throws IOException
     {
         Map<String, Computer> computerList = computers.getComputers();
-        System.out.println(computerList);
+        assertNotNull(computerList);
 
         List<ComputerWithDetails> computerDetailList = computers.getComputerSet().getComputers();
-        for(ComputerWithDetails detail : computerDetailList)
-        {
-            System.out.println(detail.getAssignedLabels());
-            System.out.println(detail.getAbsoluteRemotePath());
-
-            LoadStatistics load = detail.getLoadStatistics();
-            System.out.println(load);
-        }
+        assertEquals(1, computerDetailList.size());
     }
 }

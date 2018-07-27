@@ -18,6 +18,15 @@ public class Credentials extends BaseManager
     private String baseUrl = V2URL;
     private boolean isVersion1 = false;
 
+    public Credentials(){}
+
+    public Credentials(String baseUrl) {
+        this.baseUrl = baseUrl;
+        if(V1URL.equals(baseUrl)){
+            isVersion1 = true;
+        }
+    }
+
     /**
      * Create a credential<br/>
      * 创建一个凭据
