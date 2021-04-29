@@ -1,0 +1,17 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "21:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.fasterxml.jackson.core:jackson-core
+    versions:
+    - 2.12.1
+    - 2.12.2
+  - dependency-name: com.fasterxml.jackson.core:jackson-annotations
+    versions:
+    - 2.12.1
+    - 2.12.2
